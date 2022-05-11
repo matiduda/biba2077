@@ -1,0 +1,51 @@
+public class FIFA2077 extends Application {
+    Button btUp = new Button("UP");
+    Button btDown = new Button("DOWN");
+    Button btLeft = new Button("LEFT");
+    Button btRight = new Button("RIGHT");
+    
+    final Circle p1 =
+    final Circle p2 =
+    final Circle p3 =
+
+    final double p1Speed = 100 ; // pixels per second
+    final double minX = 0 ;
+    final double maxX = 800 ; // whatever the max value should be.. can use a property and bind to scene width if needed...
+    final DoubleProperty p1Velocity = new SimpleDoubleProperty();
+    final LongProperty lastUpdateTime = new SimpleLongProperty();
+	
+    final AnimationTimer p1Animation = new AnimationTimer() {
+  	@Override
+ 	 public void handle(long timestamp) {
+   		 if (lastUpdateTime.get() > 0) {
+     			final double elapsedSeconds = (timestamp - lastUpdateTime.get()) / 1_000_000_000.0 ;
+      			final double deltaX = elapsedSeconds * p1.get();
+      			final double oldX = p1.getTranslateX();
+      			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
+      			p1.setTranslateX(newX);
+    		}
+   	 lastUpdateTime.set(timestamp);
+  	 }
+    };
+    p1Animation.start();
+
+    scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+    @Override
+    public void handle(KeyEvent event) {
+    	if (event.getCode()==KeyCode.RIGHT) { // don't use toString here!!!
+        	p1Velocity.set(p1Speed);
+    	} else if (event.getCode() == KeyCode.LEFT) {
+        p1Velocity.set(-p1Speed);
+        }
+    }
+    });
+
+    scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+    @Override
+    public void handle(KeyEvent event) {
+    	if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
+      		p1Velocity.set(0);
+    	}
+    }
+    });
+}
