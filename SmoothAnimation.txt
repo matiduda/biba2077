@@ -9,25 +9,76 @@ public class FIFA2077 extends Application {
     final Circle p3 =
 
     final double p1Speed = 100 ; // pixels per second
+    final double p2Speed = 100 ; // pixels per second
+    final double p3Speed = 100 ; // pixels per second
     final double minX = 0 ;
     final double maxX = 800 ; // whatever the max value should be.. can use a property and bind to scene width if needed...
+    final double minY = 0 ;
+    final double maxY = 800 ; // whatever the max value should be.. can use a property and bind to scene height if needed...
     final DoubleProperty p1Velocity = new SimpleDoubleProperty();
-    final LongProperty lastUpdateTime = new SimpleLongProperty();
+    final DoubleProperty p2Velocity = new SimpleDoubleProperty();
+    final DoubleProperty p3Velocity = new SimpleDoubleProperty();
+    final DoubleProperty p1Height = new SimpleDoubleProperty();
+    final DoubleProperty p2Height = new SimpleDoubleProperty();
+    final DoubleProperty p3Height = new SimpleDoubleProperty();
+    final LongProperty p1lastUpdateTime = new SimpleLongProperty();
+    final LongProperty p2lastUpdateTime = new SimpleLongProperty();
+    final LongProperty p3lastUpdateTime = new SimpleLongProperty();
 	
     final AnimationTimer p1Animation = new AnimationTimer() {
   	@Override
  	 public void handle(long timestamp) {
-   		 if (lastUpdateTime.get() > 0) {
-     			final double elapsedSeconds = (timestamp - lastUpdateTime.get()) / 1_000_000_000.0 ;
+   		 if (p1lastUpdateTime.get() > 0) {
+     			final double elapsedSeconds = (timestamp - p1lastUpdateTime.get()) / 1_000_000_000.0 ;
       			final double deltaX = elapsedSeconds * p1.get();
       			final double oldX = p1.getTranslateX();
       			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
       			p1.setTranslateX(newX);
+			/*final double deltaY = elapsedSeconds * p1.get();
+      			final double oldY = p1.getTranslateY();
+      			final double newY = Math.max(minY, Math.min(maxY, oldY + deltaX));
+      			p1.setTranslateY(newY);*/
     		}
-   	 lastUpdateTime.set(timestamp);
+   	 p1lastUpdateTime.set(timestamp);
+  	 }
+    };
+    final AnimationTimer p2Animation = new AnimationTimer() {
+  	@Override
+ 	 public void handle(long timestamp) {
+   		 if (p2lastUpdateTime.get() > 0) {
+     			final double elapsedSeconds = (timestamp - p2lastUpdateTime.get()) / 1_000_000_000.0 ;
+      			final double deltaX = elapsedSeconds * p2.get();
+      			final double oldX = p2.getTranslateX();
+      			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
+      			p2.setTranslateX(newX);
+			/*final double deltaY = elapsedSeconds * p1.get();
+      			final double oldY = p2.getTranslateY();
+      			final double newY = Math.max(minY, Math.min(maxY, oldY + deltaX));
+      			p2.setTranslateY(newY);*/
+    		}
+   	 p2lastUpdateTime.set(timestamp);
+  	 }
+    };
+    final AnimationTimer p3Animation = new AnimationTimer() {
+  	@Override
+ 	 public void handle(long timestamp) {
+   		 if (p3lastUpdateTime.get() > 0) {
+     			final double elapsedSeconds = (timestamp - p3lastUpdateTime.get()) / 1_000_000_000.0 ;
+      			final double deltaX = elapsedSeconds * p3.get();
+      			final double oldX = p3.getTranslateX();
+      			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
+      			p3.setTranslateX(newX);
+			/*final double deltaY = elapsedSeconds * p1.get();
+      			final double oldY = p3.getTranslateY();
+      			final double newY = Math.max(minY, Math.min(maxY, oldY + deltaX));
+      			p3.setTranslateY(newY);*/
+    		}
+   	 p3lastUpdateTime.set(timestamp);
   	 }
     };
     p1Animation.start();
+    p2Animation.start();
+    p3Animation.start();
 
     scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
     @Override
@@ -35,7 +86,12 @@ public class FIFA2077 extends Application {
     	if (event.getCode()==KeyCode.RIGHT) { // don't use toString here!!!
         	p1Velocity.set(p1Speed);
     	} else if (event.getCode() == KeyCode.LEFT) {
-        p1Velocity.set(-p1Speed);
+        	p1Velocity.set(-p1Speed);
+        }
+	if (event.getCode()==KeyCode.UP) { // don't use toString here!!!
+        	p1Height.set(-p1Speed);
+    	} else if (event.getCode() == KeyCode.DOWN) {
+        	p1Height.set(p1Speed);
         }
     }
     });
@@ -46,6 +102,27 @@ public class FIFA2077 extends Application {
     	if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.LEFT) {
       		p1Velocity.set(0);
     	}
+	if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
+      		p1Height.set(0);
+    	}
     }
     });
+    
+    private Parent createField() {
+        Pane root = new Pane();
+	
+        return root;
+    }
+    
+    @Override
+    public void start(Stage stage) throws IOException {
+        Scene scene = new Scene(createField());
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
