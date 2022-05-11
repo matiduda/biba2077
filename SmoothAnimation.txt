@@ -1,8 +1,4 @@
 public class FIFA2077 extends Application {
-    Button btUp = new Button("UP");
-    Button btDown = new Button("DOWN");
-    Button btLeft = new Button("LEFT");
-    Button btRight = new Button("RIGHT");
     
     final Circle p1 =
     final Circle p2 =
@@ -30,11 +26,11 @@ public class FIFA2077 extends Application {
  	 public void handle(long timestamp) {
    		 if (p1lastUpdateTime.get() > 0) {
      			final double elapsedSeconds = (timestamp - p1lastUpdateTime.get()) / 1_000_000_000.0 ;
-      			final double deltaX = elapsedSeconds * p1.get();
+      			final double deltaX = elapsedSeconds * p1.getCenterX();
       			final double oldX = p1.getTranslateX();
       			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
       			p1.setTranslateX(newX);
-			/*final double deltaY = elapsedSeconds * p1.get();
+			/*final double deltaY = elapsedSeconds * p1.getCenterY();
       			final double oldY = p1.getTranslateY();
       			final double newY = Math.max(minY, Math.min(maxY, oldY + deltaX));
       			p1.setTranslateY(newY);*/
@@ -47,11 +43,11 @@ public class FIFA2077 extends Application {
  	 public void handle(long timestamp) {
    		 if (p2lastUpdateTime.get() > 0) {
      			final double elapsedSeconds = (timestamp - p2lastUpdateTime.get()) / 1_000_000_000.0 ;
-      			final double deltaX = elapsedSeconds * p2.get();
+      			final double deltaX = elapsedSeconds * p2.getCenterX();
       			final double oldX = p2.getTranslateX();
       			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
       			p2.setTranslateX(newX);
-			/*final double deltaY = elapsedSeconds * p1.get();
+			/*final double deltaY = elapsedSeconds * p2.getCenterY();
       			final double oldY = p2.getTranslateY();
       			final double newY = Math.max(minY, Math.min(maxY, oldY + deltaX));
       			p2.setTranslateY(newY);*/
@@ -64,11 +60,11 @@ public class FIFA2077 extends Application {
  	 public void handle(long timestamp) {
    		 if (p3lastUpdateTime.get() > 0) {
      			final double elapsedSeconds = (timestamp - p3lastUpdateTime.get()) / 1_000_000_000.0 ;
-      			final double deltaX = elapsedSeconds * p3.get();
+      			final double deltaX = elapsedSeconds * p3.getCenterX();
       			final double oldX = p3.getTranslateX();
       			final double newX = Math.max(minX, Math.min(maxX, oldX + deltaX));
       			p3.setTranslateX(newX);
-			/*final double deltaY = elapsedSeconds * p1.get();
+			/*final double deltaY = elapsedSeconds * p3.getCenterY();
       			final double oldY = p3.getTranslateY();
       			final double newY = Math.max(minY, Math.min(maxY, oldY + deltaX));
       			p3.setTranslateY(newY);*/
@@ -93,6 +89,26 @@ public class FIFA2077 extends Application {
     	} else if (event.getCode() == KeyCode.DOWN) {
         	p1Height.set(p1Speed);
         }
+	if (event.getCode()==KeyCode.J) { // don't use toString here!!!
+        	p2Velocity.set(p2Speed);
+    	} else if (event.getCode() == KeyCode.L) {
+        	p2Velocity.set(-p2Speed);
+        }
+	if (event.getCode()==KeyCode.I) { // don't use toString here!!!
+        	p2Height.set(-p2Speed);
+    	} else if (event.getCode() == KeyCode.K) {
+        	p2Height.set(p2Speed);
+        }
+	if (event.getCode()==KeyCode.A) { // don't use toString here!!!
+        	p3Velocity.set(p3Speed);
+    	} else if (event.getCode() == KeyCode.D) {
+        	p3Velocity.set(-p3Speed);
+        }
+	if (event.getCode()==KeyCode.W) { // don't use toString here!!!
+        	p3Height.set(-p3Speed);
+    	} else if (event.getCode() == KeyCode.S) {
+        	p3Height.set(p3Speed);
+        }
     }
     });
 
@@ -104,6 +120,18 @@ public class FIFA2077 extends Application {
     	}
 	if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
       		p1Height.set(0);
+    	}
+	if (event.getCode() == KeyCode.J || event.getCode() == KeyCode.L) {
+      		p2Velocity.set(0);
+    	}
+	if (event.getCode() == KeyCode.I || event.getCode() == KeyCode.K) {
+      		p2Height.set(0);
+    	}
+	if (event.getCode() == KeyCode.A || event.getCode() == KeyCode.D) {
+      		p3Velocity.set(0);
+    	}
+	if (event.getCode() == KeyCode.W || event.getCode() == KeyCode.S) {
+      		p3Height.set(0);
     	}
     }
     });
