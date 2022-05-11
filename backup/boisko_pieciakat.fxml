@@ -39,15 +39,21 @@
 <?import javafx.scene.shape.Rectangle?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <Circle fill="TRANSPARENT" layoutX="320.0" layoutY="216.0" radius="120.0" stroke="BLACK" strokeType="INSIDE" />
-            <Polygon fill="#7ec850" layoutX="303.0" layoutY="292.0" points="-43.0, 24.0, 80.5, 24.0, 137.0, -76.0, 80.5, -176.0, -43.0, -176.0, -103.0, -76.0" smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4494df" height="9.0" layoutX="299.0" layoutY="293.0" stroke="TRANSPARENT" strokeType="INSIDE" width="43.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1ff00" height="9.0" layoutX="222.0" layoutY="165.0" rotate="-60.0" stroke="TRANSPARENT" strokeType="INSIDE" width="43.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#de4556" height="9.0" layoutX="373.0" layoutY="165.0" rotate="60.0" stroke="TRANSPARENT" strokeType="INSIDE" width="43.0" />
-      </children>
-    </AnchorPane>
-  </children>
+    <children>
+        <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Circle fill="TRANSPARENT" layoutX="320.0" layoutY="216.0" radius="120.0" stroke="BLACK"
+                        strokeType="INSIDE"/>
+                <Polygon fill="#7ec850" layoutX="303.0" layoutY="292.0"
+                         points="-43.0, 24.0, 80.5, 24.0, 137.0, -76.0, 80.5, -176.0, -43.0, -176.0, -103.0, -76.0"
+                         smooth="false" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0"/>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4494df" height="9.0" layoutX="299.0" layoutY="293.0"
+                           stroke="TRANSPARENT" strokeType="INSIDE" width="43.0"/>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1ff00" height="9.0" layoutX="222.0" layoutY="165.0"
+                           rotate="-60.0" stroke="TRANSPARENT" strokeType="INSIDE" width="43.0"/>
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#de4556" height="9.0" layoutX="373.0" layoutY="165.0"
+                           rotate="60.0" stroke="TRANSPARENT" strokeType="INSIDE" width="43.0"/>
+            </children>
+        </AnchorPane>
+    </children>
 </VBox>
