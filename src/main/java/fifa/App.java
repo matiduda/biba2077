@@ -35,9 +35,11 @@ public class App extends Application {
 
         Scene scene = new Scene(root, width, height, Color.TRANSPARENT);
 
-        Player player = new Player(stage, scene, 500, 500);
-
-        root.getChildren().add(player.getPlayer());
+        Player player = new Player(stage, scene, 50, 50);
+        Ball ball = new Ball(400,400);
+        new CollisionDetection(ball, player);
+        root.getChildren().add(player.ball);
+        root.getChildren().add(ball.ball);
 
         prepareGameWindow(stage, scene, "/icon/icon.png");
     }
