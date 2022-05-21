@@ -2,10 +2,7 @@ package fifa;
 
 import javafx.animation.AnimationTimer;
 
-// TODO:
-// Reorganize the class to detect collisions
-// between all players and the ball easily
-// (could be done using an array of objects)
+// TODO: Reorganize the class to detect collisions between all players and the ball easily (could be done using an array of objects)
 
 public class CollisionDetection {
     private final static int collisionBoundary = 20;
