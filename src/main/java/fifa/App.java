@@ -16,8 +16,8 @@ public class App extends Application {
     boolean STARTS_FULLSCREEN = false;
     boolean IS_RESIZABLE = false;
 
-    final static double width = 720;
-    final static double height = 720;
+    final static double WIDTH = 720;
+    final static double HEIGHT = 720;
     //
 
     public static void main(String[] args) {
@@ -29,16 +29,16 @@ public class App extends Application {
 
         Group root = new Group();
 
-        Scene scene = new Scene(root, width, height, Color.TRANSPARENT);
+        Scene scene = new Scene(root, WIDTH, HEIGHT, Color.TRANSPARENT);
         Elements elm = new Elements();
         
-        new PlayField(elm, width, height);
+        new PlayField(elm);
 
         Player player1 = new Player(elm, stage, scene, 200, 200, Color.BLUE);
         // Player player2 = new Player(elm, stage, scene, 200, 500, Color.RED);
         // Player player3 = new Player(elm, stage, scene, 600, 200, Color.GREEN);
 
-        Ball ball = new Ball(elm, (int) width/2,(int) height/2);
+        Ball ball = new Ball(elm, (int) WIDTH /2,(int) HEIGHT /2);
 
         CollisionDetection system = new CollisionDetection(PlayField.ground);
 

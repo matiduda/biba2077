@@ -6,6 +6,9 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+import static fifa.App.HEIGHT;
+import static fifa.App.WIDTH;
+
 // TODO: Obrót koordynatów dla bramek ustawionych pod kątem
 
 public class CollisionDetection {
@@ -98,7 +101,7 @@ public class CollisionDetection {
     private boolean checkStaticCollision(Ball b, Rectangle wall, double angle) {
         double radius = b.ball.getRadius();
 
-        Vector position = rotateCoordinates(b.pos, angle, new Vector(720 / 2, 720 / 2));
+        Vector position = rotateCoordinates(b.pos, angle, new Vector(WIDTH / 2, HEIGHT / 2));
 
         double x = position.x;
         double y = position.y;
