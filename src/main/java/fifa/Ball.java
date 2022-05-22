@@ -1,18 +1,19 @@
 package fifa;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Ball {
 
     // Object behaviour attributes
-    int maxSpeed = 7;
+    int maxSpeed = 3;
     double airResistance = 0.07;
     double acceleration = 0.2;
-    double mass = 1.2;
+    double mass = 10;
     //
 
-    public IntVec pos;
+    public Vector pos;
     public Vector vel;
 
     final int size = 20;
@@ -23,12 +24,10 @@ public class Ball {
 
     public Ball(Elements list, int startX, int startY) {
         vel = new Vector(0, 0);
-        pos = new IntVec(startX, startY);
+        pos = new Vector(startX, startY);
 
-        ball = new Circle();
-        ball.setCenterX(startX);
-        ball.setCenterY(startY);
-        ball.setRadius(size);
+        ball = new Circle(0f, 0f, size);
+        ball.setFill(Color.WHITE);
         list.add(ball);
 
         setEventsAndTimers();

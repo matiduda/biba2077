@@ -1,19 +1,14 @@
 package fifa;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
-
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-
-import java.util.Collection;
-import java.util.LinkedList;
-
 
 public class App extends Application {
 
@@ -39,10 +34,41 @@ public class App extends Application {
         
         new PlayField(elm, width, height);
 
-        Player player = new Player(elm, stage, scene, 50, 50);
+        Player player1 = new Player(elm, stage, scene, 200, 200, Color.BLUE);
+        // Player player2 = new Player(elm, stage, scene, 200, 500, Color.RED);
+        // Player player3 = new Player(elm, stage, scene, 600, 200, Color.GREEN);
+
         Ball ball = new Ball(elm, (int) width/2,(int) height/2);
-        new CollisionDetection(ball, player);
-        
+
+        CollisionDetection system = new CollisionDetection();
+
+        ObservableList<Double> pts = PlayField.goalR.getPoints();
+
+        System.out.println(pts);
+
+
+        // Slupki do systemu kolizji (nwm jak sa po ang)
+        double slupekGrubosc = 20;
+        double slupekOffset = 10;
+        double slupekHeight = 100;
+
+            Rectangle left = new Rectangle(pts.get(6) - slupekOffset, pts.get(7), slupekGrubosc, slupekHeight);
+            left.setFill(Color.WHITE);
+            left.setOpacity(0.2);
+            elm.add(left);
+
+            Rectangle right = new Rectangle(pts.get(0) - slupekOffset, pts.get(7), slupekGrubosc, slupekHeight);
+            right.setFill(Color.WHITE);
+            right.setOpacity(0.2);
+            elm.add(right);
+
+            system.addStatic(left);
+            system.addStatic(right);
+        //
+
+        system.addDynamic(ball);
+        system.addDynamic(player1);
+
         root.getChildren().addAll(elm.getElements());
 
         prepareGameWindow(stage, scene, "/icon/icon.png");

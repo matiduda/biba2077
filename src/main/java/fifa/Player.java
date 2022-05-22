@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.scene.shape.Circle;
 
@@ -17,13 +18,14 @@ public class Player extends Ball {
     //
 
     boolean none, running, goNorth, goSouth, goEast, goWest;
-    public int size = 40;
+    public int size = 27;
 
-    public Player(Elements list, Stage s, Scene scene, int startX, int startY) {
+    public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color) {
         vel = new Vector(0, 0);
-        pos = new IntVec(startX, startY);
+        pos = new Vector(startX, startY);
 
         ball = new Circle(0f, 0f, size);
+        ball.setFill(color);
         list.add(ball);
         
         setEventsAndTimers(scene, s);
@@ -43,24 +45,21 @@ public class Player extends Ball {
                     case DOWN:
                         goSouth = true;
                         none = false;
-
                         break;
                     case LEFT:
                         goWest = true;
                         none = false;
-
                         break;
                     case RIGHT:
                         goEast = true;
                         none = false;
-
                         break;
                     case SHIFT:
                         running = true;
                         none = false;
-
                         break;
                     default:
+                        none = true;
                         break;
                 }
             }

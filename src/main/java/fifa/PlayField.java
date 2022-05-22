@@ -3,7 +3,9 @@ package fifa;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
+
 import static java.lang.Math.sqrt;
+
 import javafx.scene.paint.Color;
 
 public class PlayField {
@@ -14,12 +16,14 @@ public class PlayField {
         BLUE, YELLOW, RED
     }
     
-    public Polyline goalB;
-    public Polyline goalY;
-    public Polyline goalR;
+    public static Polyline goalB;
+    public static Polyline goalY;
+    public static Polyline goalR;
+
     public Circle ground;
     public Polyline goal;
     public Polygon field;
+
     private double width;
     private double height;
 

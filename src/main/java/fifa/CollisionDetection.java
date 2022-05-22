@@ -1,43 +1,112 @@
 package fifa;
 
-import javafx.animation.AnimationTimer;
+import java.util.HashMap;
 
-// TODO: Reorganize the class to detect collisions between all players and the ball easily (could be done using an array of objects)
+import javafx.animation.AnimationTimer;
+import javafx.scene.shape.Rectangle;
+
+// TODO: Obrót koordynatów dla bramek ustawionych pod kątem
 
 public class CollisionDetection {
-    private final static int collisionBoundary = 20;
-    static int i = 0;
 
-    CollisionDetection(Ball ego, Ball wall) {        
+    private final static int collisionBoundary = 10;
+
+    HashMap<Integer, Ball> dynamicObj = new HashMap<Integer, Ball>();
+    HashMap<Integer, Rectangle> staticObj = new HashMap<Integer, Rectangle>();
+
+    private int dynamicSize = 0;
+    private int staticSize = 0;
+
+    public CollisionDetection() {      
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                // Resolve collisions between dynamic objects
 
-                if(checkCollision(ego, wall)) {
-                    System.out.printf("Collision %d\n", i++); // TODO: Delete this
-                    resolveCollision(ego, wall);
+                for(int i = 0 ; i < dynamicSize; i++){
+                    for(int j = i + 1 ; j < dynamicSize; j++) {
+                        Ball b1 = dynamicObj.get(i);
+                        Ball b2 = dynamicObj.get(j);
+
+                        if(checkBallCollision(b1, b2) == true) {
+                            resolveBallCollision(b1, b2);
+                        }
+                    }
+                }
+
+                
+                // Resolve collisions between dynamic and static objects
+                
+                for(int i = 0 ; i < dynamicSize; i++){
+                    for(int j = 0 ; j < staticSize; j++) {
+                        Ball b = dynamicObj.get(i);
+                        Rectangle wall = staticObj.get(j);
+
+                        if(checkStaticCollision(b, wall) == true) {
+                            resolveStaticCollision(b, wall);
+                            // TODO Delete
+                        }
+                    }
                 }
             }
         };
 
-
         timer.start();
     }
 
-    public static boolean checkCollision(Ball b1, Ball b2) {        
+    public void addDynamic(Ball ball) {
+        dynamicObj.put(dynamicSize++, ball);
+    }
+
+    public void addStatic(Rectangle wall) {
+        staticObj.put(staticSize++, wall);
+    }
+
+    private static double getDistance(Vector pos1, Vector pos2) {
+        double xDistance = pos2.x - pos1.x;
+        double yDistance = pos2.y - pos1.y;
+
+        return Math.sqrt(xDistance * xDistance + yDistance * yDistance);
+    }
+
+    // --------------- Ball - Rectangle collisions ---------------
+
+    private boolean checkStaticCollision(Ball b, Rectangle wall) {
+        double radius = b.ball.getRadius();
+
+        double x = b.ball.getCenterX();
+        double y = b.ball.getCenterY();
+
+        double minX = wall.getX() - radius;
+        double maxX = minX + wall.getWidth() + radius;
+
+        double minY = wall.getY() - radius;
+        double maxY = minY + wall.getHeight() + radius;
+
+        if(y >= minY && y <= maxY && x >= minX && x <= maxX) {
+            // System.out.printf("%d >= %f && %d <= %f && %d >= %f && %d <= %f\n", b.pos.y, minY, b.pos.y, maxY, b.pos.x, minX, b.pos.x, maxX);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    private void resolveStaticCollision(Ball particle, Rectangle wall) {
+        particle.vel.x *= -1;
+        particle.vel.y *= -1;
+    }
+
+
+    // --------------- Ball - Ball collisions ---------------
+
+    public static boolean checkBallCollision(Ball b1, Ball b2) {        
         double distance = getDistance(b1.pos, b2.pos);
 
         if (distance <= (b1.size + b2.size + collisionBoundary))
             return true;
 
         return false;
-    }
-
-    private static double getDistance(IntVec pos1, IntVec pos2) {
-        double xDistance = pos2.x - pos1.x;
-        double yDistance = pos2.y - pos1.y;
-
-        return Math.sqrt(xDistance * xDistance + yDistance * yDistance);
     }
 
     // Code resource from
@@ -53,7 +122,7 @@ public class CollisionDetection {
         return rotatedVelocities;
     }
 
-    private void resolveCollision(Ball particle, Ball otherParticle) {
+    private void resolveBallCollision(Ball particle, Ball otherParticle) {
         double xVelocityDiff = particle.vel.x - otherParticle.vel.x;
         double yVelocityDiff = particle.vel.y - otherParticle.vel.y;
         double xDist = otherParticle.pos.x - particle.pos.x;
