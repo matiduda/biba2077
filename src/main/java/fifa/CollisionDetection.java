@@ -132,7 +132,7 @@ public class CollisionDetection {
         double effect = 1.1;
 
         if(particle.IS_BALL)
-            effect += 0.5;
+            effect += 0.1;
 
 
         particle.vel.x *= -effect;
