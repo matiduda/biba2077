@@ -20,7 +20,7 @@ public class PlayField {
     public static Polyline goalY;
     public static Polyline goalR;
 
-    public Circle ground;
+    public static Circle ground;
     public Polyline goal;
     public Polygon field;
 

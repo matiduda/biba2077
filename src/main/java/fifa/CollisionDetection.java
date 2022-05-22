@@ -3,6 +3,7 @@ package fifa;
 import java.util.HashMap;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 // TODO: Obrót koordynatów dla bramek ustawionych pod kątem
@@ -14,10 +15,13 @@ public class CollisionDetection {
     HashMap<Integer, Ball> dynamicObj = new HashMap<Integer, Ball>();
     HashMap<Integer, Rectangle> staticObj = new HashMap<Integer, Rectangle>();
 
+    private Circle gameField;
+
     private int dynamicSize = 0;
     private int staticSize = 0;
 
-    public CollisionDetection() {      
+    public CollisionDetection(Circle border) {      
+        gameField = border;
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -35,17 +39,36 @@ public class CollisionDetection {
                     }
                 }
 
-                
                 // Resolve collisions between dynamic and static objects
                 
                 for(int i = 0 ; i < dynamicSize; i++){
-                    for(int j = 0 ; j < staticSize; j++) {
-                        Ball b = dynamicObj.get(i);
+                    
+                    Ball b = dynamicObj.get(i);
+
+                    if(checkFieldCollision(b) == true) {
+                        resolveStaticCollision(b);
+                    }
+
+                    if(b.IS_BALL) {
+                        for(int j = 0 ; j < staticSize; j++) {
+                            
                         Rectangle wall = staticObj.get(j);
 
-                        if(checkStaticCollision(b, wall) == true) {
-                            resolveStaticCollision(b, wall);
-                            // TODO Delete
+                            // Check for ball object and for all 3 angles
+                            for (int s = 0; s < 3; s ++ ) {
+                                
+                                if(checkStaticCollision(b, wall, 0) == true) {
+                                    resolveStaticCollision(b);
+                                }
+                                
+                                if(checkStaticCollision(b, wall, - 2 * Math.PI / 3) == true) {
+                                    resolveStaticCollision(b);
+                                }
+                                
+                                if(checkStaticCollision(b, wall, 2 * Math.PI / 3) == true) {
+                                    resolveStaticCollision(b);
+                                }
+                            }
                         }
                     }
                 }
@@ -72,11 +95,13 @@ public class CollisionDetection {
 
     // --------------- Ball - Rectangle collisions ---------------
 
-    private boolean checkStaticCollision(Ball b, Rectangle wall) {
+    private boolean checkStaticCollision(Ball b, Rectangle wall, double angle) {
         double radius = b.ball.getRadius();
 
-        double x = b.ball.getCenterX();
-        double y = b.ball.getCenterY();
+        Vector position = rotateCoordinates(b.pos, angle, new Vector(720 / 2, 720 / 2));
+
+        double x = position.x;
+        double y = position.y;
 
         double minX = wall.getX() - radius;
         double maxX = minX + wall.getWidth() + radius;
@@ -91,12 +116,40 @@ public class CollisionDetection {
         
         return false;
     }
+
+    private boolean checkFieldCollision(Ball b) {
+        int offset = -30;
+
+        Vector center = new Vector(gameField.getCenterX(), gameField.getCenterY());
+        if(getDistance(b.pos, center) >= gameField.getRadius() + offset)
+            return true;
+        return false;
+    }
     
-    private void resolveStaticCollision(Ball particle, Rectangle wall) {
-        particle.vel.x *= -1;
-        particle.vel.y *= -1;
+    private void resolveStaticCollision(Ball particle) {
+        System.out.print("Collision!\t");
+
+        double effect = 1.1;
+
+        if(particle.IS_BALL)
+            effect += 0.5;
+
+
+        particle.vel.x *= -effect;
+        particle.vel.y *= -effect;
     }
 
+    Vector rotateCoordinates(Vector vec, double angle, Vector anchor) {
+        double sinus   = Math.sin(angle);
+        double cosinus = Math.cos(angle);
+
+        Vector temp = new Vector(0 , 0);
+
+        temp.x = (vec.x - anchor.x) * cosinus - (vec.y - anchor.y) * sinus + anchor.x;
+        temp.y = (vec.y - anchor.y) * cosinus + (vec.x - anchor.x) * sinus + anchor.y;
+
+        return temp;
+    }
 
     // --------------- Ball - Ball collisions ---------------
 

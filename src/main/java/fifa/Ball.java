@@ -8,10 +8,11 @@ public class Ball {
 
     // Object behaviour attributes
     int maxSpeed = 3;
-    double airResistance = 0.07;
+    double airResistance = 0.02;
     double acceleration = 0.2;
     double mass = 10;
     //
+    public boolean IS_BALL;
 
     public Vector pos;
     public Vector vel;
@@ -23,6 +24,7 @@ public class Ball {
     public Ball() {};
 
     public Ball(Elements list, int startX, int startY) {
+        IS_BALL = true;
         vel = new Vector(0, 0);
         pos = new Vector(startX, startY);
 

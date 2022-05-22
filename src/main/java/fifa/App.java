@@ -40,31 +40,34 @@ public class App extends Application {
 
         Ball ball = new Ball(elm, (int) width/2,(int) height/2);
 
-        CollisionDetection system = new CollisionDetection();
+        CollisionDetection system = new CollisionDetection(PlayField.ground);
 
-        ObservableList<Double> pts = PlayField.goalR.getPoints();
-
-        System.out.println(pts);
-
+        ObservableList<Double> ptsR = PlayField.goalR.getPoints();
 
         // Slupki do systemu kolizji (nwm jak sa po ang)
         double slupekGrubosc = 20;
-        double slupekOffset = 10;
         double slupekHeight = 100;
 
-            Rectangle left = new Rectangle(pts.get(6) - slupekOffset, pts.get(7), slupekGrubosc, slupekHeight);
-            left.setFill(Color.WHITE);
-            left.setOpacity(0.2);
-            elm.add(left);
+        double R_offset_x = -10;
+        double R_offset_y = 0;
+        
+            Rectangle leftR = new Rectangle(ptsR.get(6) + R_offset_x, ptsR.get(7) + R_offset_y, slupekGrubosc, slupekHeight);
+            leftR.setFill(Color.WHITE);
+            leftR.setOpacity(0.2);
+            elm.add(leftR);
 
-            Rectangle right = new Rectangle(pts.get(0) - slupekOffset, pts.get(7), slupekGrubosc, slupekHeight);
-            right.setFill(Color.WHITE);
-            right.setOpacity(0.2);
-            elm.add(right);
+            Rectangle rightR = new Rectangle(ptsR.get(0) + R_offset_x, ptsR.get(7) + R_offset_y, slupekGrubosc, slupekHeight);
+            rightR.setFill(Color.WHITE);
+            rightR.setOpacity(0.2);
+            elm.add(rightR);
 
-            system.addStatic(left);
-            system.addStatic(right);
         //
+
+        system.addStatic(leftR);
+        system.addStatic(rightR);
+        // system.addStatic(rightG);
+        // system.addStatic(leftY);
+        // system.addStatic(rightY);
 
         system.addDynamic(ball);
         system.addDynamic(player1);

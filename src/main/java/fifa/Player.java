@@ -21,6 +21,8 @@ public class Player extends Ball {
     public int size = 27;
 
     public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color) {
+        IS_BALL = false;
+
         vel = new Vector(0, 0);
         pos = new Vector(startX, startY);
 
