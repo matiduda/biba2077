@@ -35,23 +35,15 @@ public class App extends Application {
         Group root = new Group();
 
         Scene scene = new Scene(root, width, height, Color.TRANSPARENT);
+        Elements elm = new Elements();
+        
+        new PlayField(elm, width, height);
 
-        PlayField field = new PlayField(width, height);
-
-        Player player = new Player(stage, scene, 50, 50);
-        Ball ball = new Ball((int) width/2,(int) height/2);
+        Player player = new Player(elm, stage, scene, 50, 50);
+        Ball ball = new Ball(elm, (int) width/2,(int) height/2);
         new CollisionDetection(ball, player);
         
-        Collection<Node> elements = new LinkedList<Node>();
-        elements.add(field.ground);
-        elements.add(field.field);
-        elements.add(field.goal1);
-        elements.add(field.goal2);
-        elements.add(field.goal3);
-        elements.add(player.ball);
-        elements.add(ball.ball);
-
-        root.getChildren().addAll(elements);
+        root.getChildren().addAll(elm.getElements());
 
         prepareGameWindow(stage, scene, "/icon/icon.png");
     }

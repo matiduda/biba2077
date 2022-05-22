@@ -19,12 +19,13 @@ public class Player extends Ball {
     boolean none, running, goNorth, goSouth, goEast, goWest;
     public int size = 40;
 
-    public Player(Stage s, Scene scene, int startX, int startY) {
+    public Player(Elements list, Stage s, Scene scene, int startX, int startY) {
         vel = new Vector(0, 0);
         pos = new IntVec(startX, startY);
 
         ball = new Circle(0f, 0f, size);
-
+        list.add(ball);
+        
         setEventsAndTimers(scene, s);
     }
 

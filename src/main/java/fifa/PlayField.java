@@ -7,23 +7,29 @@ import static java.lang.Math.sqrt;
 import javafx.scene.paint.Color;
 
 public class PlayField {
+
+    // TODO: Add lines to the field
+
+    private enum GoalType {
+        BLUE, YELLOW, RED
+    }
     
-    public Polyline goal1;
-    public Polyline goal2;
-    public Polyline goal3;
+    public Polyline goalB;
+    public Polyline goalY;
+    public Polyline goalR;
     public Circle ground;
     public Polyline goal;
     public Polygon field;
     private double width;
     private double height;
 
-    public PlayField(double width, double height) {
+    public PlayField(Elements list, double width, double height) {
         this.width = width;
         this.height = height;
 
-        goal1 = createGoal(1);
-        goal2 = createGoal(2);
-        goal3 = createGoal(3);
+        goalB = createGoal(GoalType.BLUE);
+        goalY = createGoal(GoalType.YELLOW);
+        goalR = createGoal(GoalType.RED);
 
         ground = new Circle(width/2,height/2,height/2, Color.SADDLEBROWN);
 
@@ -37,12 +43,20 @@ public class PlayField {
         field.setFill(Color.LAWNGREEN);
         field.setStroke(Color.WHITE);
         field.setStrokeWidth(5);
+
+        list.add(ground);
+        list.add(field);
+        list.add(goalB);
+        list.add(goalY);
+        list.add(goalR);
+
+        // Add lines here using list.add(lineX);
     }
 
-    private Polyline createGoal(int type){
+    private Polyline createGoal(GoalType type){
         goal = new Polyline();
         switch (type) {
-            case 1:
+            case BLUE:
                 goal.getPoints().addAll(midpointX(width/2 - height/2,midpointX(width/2 - height/2, width/2 - height/4))+height/20,  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2))+height/40,
                         midpointX(width/2 - height/2,midpointX(width/2 - height/2, width/2 - height/4)),  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
                         midpointX(width/2 - height/4,midpointX(width/2 - height/2, width/2 - height/4)),  midpointY(height/2 - (height/2 * sqrt(3))/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
@@ -50,7 +64,7 @@ public class PlayField {
                 goal.setFill(Color.BLUE);
                 goal.setStrokeWidth(5);
                 break;
-            case 2:
+            case YELLOW:
                 goal.getPoints().addAll(midpointX(width/2 + height/2,midpointX(width/2 + height/2, width/2 + height/4))-height/20,  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2))+height/40,
                         midpointX(width/2 + height/2,midpointX(width/2 + height/2, width/2 + height/4)),  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
                         midpointX(width/2 + height/4,midpointX(width/2 + height/2, width/2 + height/4)),  midpointY(height/2 - (height/2 * sqrt(3))/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
@@ -58,7 +72,7 @@ public class PlayField {
                 goal.setFill(Color.YELLOW);
                 goal.setStrokeWidth(5);
                 break;
-            case 3:
+            case RED:
                 goal.getPoints().addAll(midpointX(width/2 + height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2) - height/20,
                         midpointX(width/2 + height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2),
                         midpointX(width/2 - height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2),

@@ -21,7 +21,7 @@ public class Ball {
 
     public Ball() {};
 
-    public Ball(int startX, int startY) {
+    public Ball(Elements list, int startX, int startY) {
         vel = new Vector(0, 0);
         pos = new IntVec(startX, startY);
 
@@ -29,6 +29,7 @@ public class Ball {
         ball.setCenterX(startX);
         ball.setCenterY(startY);
         ball.setRadius(size);
+        list.add(ball);
 
         setEventsAndTimers();
     }
