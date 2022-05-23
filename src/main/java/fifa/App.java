@@ -34,11 +34,13 @@ public class App extends Application {
         
         new PlayField(elm, width, height);
 
-        Player player1 = new Player(elm, stage, scene, 200, 200, Color.BLUE);
-        // Player player2 = new Player(elm, stage, scene, 200, 500, Color.RED);
-        // Player player3 = new Player(elm, stage, scene, 600, 200, Color.GREEN);
+        Player player1 = new Player(elm, stage, scene, 200, 200, Color.BLUE, PlayField.ground);
+        Player player2 = new Player(elm, stage, scene, 200, 500, Color.RED, PlayField.ground);
+        Player player3 = new Player(elm, stage, scene, 600, 200, Color.GREEN, PlayField.ground);
 
-        Ball ball = new Ball(elm, (int) width/2,(int) height/2);
+        new KeyboardInput();
+        
+        Ball ball = new Ball(elm, (int) width/2,(int) height/2, PlayField.ground);
 
         CollisionDetection system = new CollisionDetection(PlayField.ground);
 
@@ -46,31 +48,36 @@ public class App extends Application {
 
         // Slupki do systemu kolizji (nwm jak sa po ang)
         double slupekGrubosc = 20;
-        double slupekHeight = 100;
+        double slupekHeight = 60;
+
+        Color bramkaColor = Color.TRANSPARENT;
 
         double R_offset_x = -10;
         double R_offset_y = 0;
         
             Rectangle leftR = new Rectangle(ptsR.get(6) + R_offset_x, ptsR.get(7) + R_offset_y, slupekGrubosc, slupekHeight);
-            leftR.setFill(Color.WHITE);
-            leftR.setOpacity(0.2);
+            leftR.setFill(bramkaColor);
             elm.add(leftR);
 
             Rectangle rightR = new Rectangle(ptsR.get(0) + R_offset_x, ptsR.get(7) + R_offset_y, slupekGrubosc, slupekHeight);
-            rightR.setFill(Color.WHITE);
-            rightR.setOpacity(0.2);
+            rightR.setFill(bramkaColor);
             elm.add(rightR);
 
-        //
+            Rectangle bottom = new Rectangle(ptsR.get(4), ptsR.get(5) + R_offset_y, ptsR.get(0) - ptsR.get(6), slupekGrubosc);
+            bottom.setFill(bramkaColor);
+            elm.add(bottom);
 
-        system.addStatic(leftR);
-        system.addStatic(rightR);
-        // system.addStatic(rightG);
-        // system.addStatic(leftY);
-        // system.addStatic(rightY);
-
-        system.addDynamic(ball);
-        system.addDynamic(player1);
+            
+            system.addStatic(leftR);
+            system.addStatic(rightR);
+            system.addStatic(bottom);
+            
+            //
+        
+            system.addDynamic(ball);
+            system.addDynamic(player1);
+        system.addDynamic(player2);
+        system.addDynamic(player3);
 
         root.getChildren().addAll(elm.getElements());
 

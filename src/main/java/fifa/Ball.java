@@ -12,7 +12,13 @@ public class Ball {
     double acceleration = 0.2;
     double mass = 10;
     //
+    protected static Vector center; 
+    protected double maxDistance;
+
     public boolean IS_BALL;
+
+    public boolean lockX;
+    public boolean lockY;
 
     public Vector pos;
     public Vector vel;
@@ -23,7 +29,7 @@ public class Ball {
 
     public Ball() {};
 
-    public Ball(Elements list, int startX, int startY) {
+    public Ball(Elements list, int startX, int startY, Circle field) {
         IS_BALL = true;
         vel = new Vector(0, 0);
         pos = new Vector(startX, startY);
@@ -31,6 +37,8 @@ public class Ball {
         ball = new Circle(0f, 0f, size);
         ball.setFill(Color.WHITE);
         list.add(ball);
+
+        setCenter(field);
 
         setEventsAndTimers();
     }
@@ -53,9 +61,9 @@ public class Ball {
         timer.start();
     }
 
-    public void move(double dx, double dy) {
-        pos.x += dx;
-        pos.y += dy;
+    public void setCenter(Circle field) {
+        center = new Vector(field.getCenterX(), field.getCenterY());
+        maxDistance = field.getRadius() - ball.getRadius();
     }
 
     public void update() {

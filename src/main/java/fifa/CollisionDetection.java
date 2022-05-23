@@ -5,9 +5,6 @@ import java.util.HashMap;
 import javafx.animation.AnimationTimer;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-
-// TODO: Obrót koordynatów dla bramek ustawionych pod kątem
-
 public class CollisionDetection {
 
     private final static int collisionBoundary = 10;
@@ -45,11 +42,14 @@ public class CollisionDetection {
                     
                     Ball b = dynamicObj.get(i);
 
-                    if(checkFieldCollision(b) == true) {
-                        resolveStaticCollision(b);
-                    }
-
                     if(b.IS_BALL) {
+
+                        // TODO: Fix ball field collision
+
+                        if(checkFieldCollision(b) == true) {
+                            resolveStaticCollision(b);
+                        }
+
                         for(int j = 0 ; j < staticSize; j++) {
                             
                         Rectangle wall = staticObj.get(j);
@@ -86,7 +86,7 @@ public class CollisionDetection {
         staticObj.put(staticSize++, wall);
     }
 
-    private static double getDistance(Vector pos1, Vector pos2) {
+    static double getDistance(Vector pos1, Vector pos2) {
         double xDistance = pos2.x - pos1.x;
         double yDistance = pos2.y - pos1.y;
 
@@ -126,17 +126,18 @@ public class CollisionDetection {
         return false;
     }
     
-    private void resolveStaticCollision(Ball particle) {
+    private void resolveStaticCollision(Ball b) {
         System.out.print("Collision!\t");
 
-        double effect = 1.1;
+        // double effect = 0.9;
 
-        if(particle.IS_BALL)
-            effect += 0.1;
+        // Grab angle between the particle and center
+        double angle = -Math.atan2(gameField.getCenterY() - b.pos.y, gameField.getCenterX() - b.pos.x);
 
-
-        particle.vel.x *= -effect;
-        particle.vel.y *= -effect;
+        Vector Vnew = rotate(b.getVelocity(), angle);
+        
+        b.vel.x = -Vnew.x;
+        b.vel.y = -Vnew.y;
     }
 
     Vector rotateCoordinates(Vector vec, double angle, Vector anchor) {
