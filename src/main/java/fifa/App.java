@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -18,6 +19,9 @@ public class App extends Application {
 
     final static double width = 720;
     final static double height = 720;
+
+    // final static double width = Screen.getPrimary().getBounds().getWidth();
+    // final static double height = Screen.getPrimary().getBounds().getHeight();
     //
 
     public static void main(String[] args) {
@@ -34,12 +38,14 @@ public class App extends Application {
         
         new PlayField(elm, width, height);
 
-        Player player1 = new Player(elm, stage, scene, 200, 200, Color.BLUE, PlayField.ground);
-        Player player2 = new Player(elm, stage, scene, 200, 500, Color.RED, PlayField.ground);
-        Player player3 = new Player(elm, stage, scene, 600, 200, Color.GREEN, PlayField.ground);
+        int offset = 100;
+
+        Player player1 = new Player(elm, stage, scene, (int)width/2 - offset, (int)height/2 - offset, Color.BLUE, PlayField.ground);
+        Player player2 = new Player(elm, stage, scene, (int)width/2, (int)height/2 + 2 * offset, Color.RED, PlayField.ground);
+        Player player3 = new Player(elm, stage, scene, (int)width/2 + offset, (int)height/2 + offset, Color.GREEN, PlayField.ground);
 
         new KeyboardInput();
-        
+
         Ball ball = new Ball(elm, (int) width/2,(int) height/2, PlayField.ground);
 
         CollisionDetection system = new CollisionDetection(PlayField.ground);
