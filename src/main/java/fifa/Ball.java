@@ -12,13 +12,11 @@ public class Ball {
     double acceleration = 0.2;
     double mass = 10;
     //
-    protected static Vector center; 
+
+    protected static Vector center;
     protected double maxDistance;
 
     public boolean IS_BALL;
-
-    public boolean lockX;
-    public boolean lockY;
 
     public Vector pos;
     public Vector vel;
@@ -27,7 +25,8 @@ public class Ball {
 
     public Circle ball;
 
-    public Ball() {};
+    public Ball() {
+    };
 
     public Ball(Elements list, int startX, int startY, Circle field) {
         IS_BALL = true;
@@ -39,29 +38,7 @@ public class Ball {
         list.add(ball);
 
         setCenter(field);
-
         setEventsAndTimers();
-    }
-
-    protected void setEventsAndTimers() {
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if(vel.x > 0) vel.x -= airResistance;
-                if(vel.x < 0) vel.x += airResistance;
-                if(vel.y > 0) vel.y -= airResistance;
-                if(vel.y < 0) vel.y += airResistance;
-
-                move(vel.x, vel.y);
-                update();
-            }
-        };
-        timer.start();
-    }
-
-    public void setCenter(Circle field) {
-        center = new Vector(field.getCenterX(), field.getCenterY());
-        maxDistance = field.getRadius() - ball.getRadius();
     }
 
     public void update() {
@@ -70,26 +47,44 @@ public class Ball {
     }
 
     private void move(double dx, double dy) {
-        Vector newPosX = new Vector(pos.x + dx, pos.y);
-        Vector newPosY = new Vector(pos.x, pos.y + dy);
 
-        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
-        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
+        // TODO:
+        // This behaviour is for bug removal,
+        // should be deleted in final version
 
-        double effect = 0.7;
+        if (CollisionDetection.getDistance(center, pos) > maxDistance)
+            pos = new Vector(App.WIDTH / 2, App.HEIGHT / 2);
 
-        if(distX < maxDistance)
-            pos.x = newPosX.x;
-        else
-            vel.x *= -effect;
+        //
 
-        if(distY < maxDistance)
-            pos.y = newPosY.y;
-        else
-            vel.y *= -effect;
+        pos.x += dx;
+        pos.y += dy;
     }
 
-    public Vector getVelocity() {
-        return vel;
+    // --------- Single use methods ---------
+
+    public void setCenter(Circle field) {
+        center = new Vector(field.getCenterX(), field.getCenterY());
+        maxDistance = field.getRadius() - ball.getRadius();
+    }
+
+    protected void setEventsAndTimers() {
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (vel.x > 0)
+                    vel.x -= airResistance;
+                if (vel.x < 0)
+                    vel.x += airResistance;
+                if (vel.y > 0)
+                    vel.y -= airResistance;
+                if (vel.y < 0)
+                    vel.y += airResistance;
+
+                move(vel.x, vel.y);
+                update();
+            }
+        };
+        timer.start();
     }
 }

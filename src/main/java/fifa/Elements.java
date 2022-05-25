@@ -6,14 +6,14 @@ import java.util.LinkedList;
 import javafx.scene.Node;
 
 public class Elements {
-    
-    private Collection<Node> elements = new LinkedList<Node>();
-    
+
+    private Collection<Node> sceneElements = new LinkedList<Node>();
+
     void add(Node node) {
-        elements.add(node);
+        sceneElements.add(node);
     }
 
     public Collection<Node> getElements() {
-        return elements;
+        return sceneElements;
     }
 }

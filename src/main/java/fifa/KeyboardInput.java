@@ -5,43 +5,43 @@ import java.util.ArrayList;
 import javafx.scene.input.KeyCode;
 
 public class KeyboardInput {
-    
+
     private static ArrayList<Player> players = new ArrayList<Player>();
 
     private static KeyCode[][] keys = new KeyCode[3][5];
 
     public KeyboardInput() {
-        for(int i = 0; i < players.size(); i++)
+        for (int i = 0; i < players.size(); i++)
             fillKeycodeArray(i);
     }
-   
+
     public static void setInputOnKeyPressed(KeyCode code) {
-        for(int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
 
             player.none = true;
 
-            if(code == keys[i][0]) { // UP
+            if (code == keys[i][0]) { // UP
                 player.goNorth = true;
                 player.none = false;
             }
 
-            if(code == keys[i][1]) { // DOWN
+            if (code == keys[i][1]) { // DOWN
                 player.goSouth = true;
                 player.none = false;
             }
 
-            if(code == keys[i][2]) { // LEFT
+            if (code == keys[i][2]) { // LEFT
                 player.goWest = true;
                 player.none = false;
             }
 
-            if(code == keys[i][3]) { // RIGHT
+            if (code == keys[i][3]) { // RIGHT
                 player.goEast = true;
                 player.none = false;
             }
 
-            if(code == keys[i][4]) { // SHOOT
+            if (code == keys[i][4]) { // SHOOT
                 player.running = true;
                 player.none = false;
             }
@@ -49,33 +49,32 @@ public class KeyboardInput {
     }
 
     public static void setInputOnKeyReleased(KeyCode code) {
-        for(int i = 0; i < players.size(); i++) {
+        for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
 
             player.none = true;
 
-
-            if(code == keys[i][0]) { // UP
+            if (code == keys[i][0]) { // UP
                 player.goNorth = false;
                 player.none = true;
             }
 
-            if(code == keys[i][1]) { // DOWN
+            if (code == keys[i][1]) { // DOWN
                 player.goSouth = false;
                 player.none = true;
             }
 
-            if(code == keys[i][2]) { // LEFT
+            if (code == keys[i][2]) { // LEFT
                 player.goWest = false;
                 player.none = true;
             }
 
-            if(code == keys[i][3]) { // RIGHT
+            if (code == keys[i][3]) { // RIGHT
                 player.goEast = false;
                 player.none = true;
             }
 
-            if(code == keys[i][4]) { // SHOOT
+            if (code == keys[i][4]) { // SHOOT
                 player.running = false;
                 player.none = true;
             }
@@ -85,11 +84,9 @@ public class KeyboardInput {
     public static void add(Player p) {
         players.add(p);
     }
-    
-    private void fillKeycodeArray(int i) {
-        System.out.println("keycodes " + i);
 
-        switch(i) {
+    private void fillKeycodeArray(int i) {
+        switch (i) {
             case 0:
                 keys[i][0] = KeyCode.UP;
                 keys[i][1] = KeyCode.DOWN;

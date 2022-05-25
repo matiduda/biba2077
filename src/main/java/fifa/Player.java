@@ -22,9 +22,7 @@ public class Player extends Ball {
     //
 
     public boolean none, running, goNorth, goSouth, goEast, goWest;
-    public double size = HEIGHT/26;
-
-    private static int playerIndex;
+    public double size = HEIGHT / 26;
 
     public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field) {
         IS_BALL = false;
@@ -39,20 +37,40 @@ public class Player extends Ball {
 
         setCenter(field);
 
-        System.out.println("Player " + playerIndex);
-
-        playerIndex += 1;
-
         KeyboardInput.add(this);
 
         setEventsAndTimers(scene, s);
     }
 
+    private void move(double dx, double dy) {
+
+        // Why overload the move() method?
+        // Because we want to make player behaviour\
+        // different from ball's behaviour - the player
+        // has different reaction at the game border
+
+        Vector newPosX = new Vector(pos.x + dx, pos.y);
+        Vector newPosY = new Vector(pos.x, pos.y + dy);
+
+        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
+        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
+
+        double effect = 0.7;
+
+        if (distX < maxDistance)
+            pos.x = newPosX.x;
+        else
+            vel.x *= -effect;
+
+        if (distY < maxDistance)
+            pos.y = newPosY.y;
+        else
+            vel.y *= -effect;
+    }
+
+    // --------- Single use methods ---------
 
     protected void setEventsAndTimers(Scene scene, Stage s) {
-
-        // Add event handlers to the scene
-        
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -113,27 +131,4 @@ public class Player extends Ball {
         timer.start();
         return;
     }
-
-    // Make player behaviour different from ball behaviour (mostly to fix collision at circle border)
-
-    private void move(double dx, double dy) {
-        Vector newPosX = new Vector(pos.x + dx, pos.y);
-        Vector newPosY = new Vector(pos.x, pos.y + dy);
-
-        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
-        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
-
-        double effect = 0.7;
-
-        if(distX < maxDistance)
-            pos.x = newPosX.x;
-        else
-            vel.x *= -effect;
-
-        if(distY < maxDistance)
-            pos.y = newPosY.y;
-        else
-            vel.y *= -effect;
-    }
-
 }

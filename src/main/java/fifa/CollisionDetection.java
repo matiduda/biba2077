@@ -1,10 +1,12 @@
 package fifa;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.shape.Circle;
+import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+
 public class CollisionDetection {
 
     private final static int collisionBoundary = 10;
@@ -12,78 +14,33 @@ public class CollisionDetection {
     HashMap<Integer, Ball> dynamicObj = new HashMap<Integer, Ball>();
     HashMap<Integer, Rectangle> staticObj = new HashMap<Integer, Rectangle>();
 
-    private Circle gameField;
+    private Rectangle bottomFieldBorder;
 
     private int dynamicSize = 0;
     private int staticSize = 0;
 
-    public CollisionDetection(Circle border) {      
-        gameField = border;
+    private final double bounceEffectBall = 1.05;
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                // Resolve collisions between dynamic objects
+    private final double goalGateAngles[] = { 0, -2 * Math.PI / 3, 2 * Math.PI / 3 };
+    private final double borderAngles[] = { Math.PI / 3, Math.PI, 5 * Math.PI / 3 };
 
-                for(int i = 0 ; i < dynamicSize; i++){
-                    for(int j = i + 1 ; j < dynamicSize; j++) {
-                        Ball b1 = dynamicObj.get(i);
-                        Ball b2 = dynamicObj.get(j);
+    AnimationTimer collisionTimer;
 
-                        if(checkBallCollision(b1, b2) == true) {
-                            resolveBallCollision(b1, b2);
-                        }
-                    }
-                }
+    public CollisionDetection(Rectangle border) {
+        bottomFieldBorder = border;
 
-                // Resolve collisions between dynamic and static objects
-                
-                for(int i = 0 ; i < dynamicSize; i++){
-                    
-                    Ball b = dynamicObj.get(i);
-
-                    if(b.IS_BALL) {
-
-                        // TODO: Fix ball field collision
-
-                        if(checkFieldCollision(b) == true) {
-                            resolveStaticCollision(b);
-                        }
-
-                        for(int j = 0 ; j < staticSize; j++) {
-                            
-                        Rectangle wall = staticObj.get(j);
-
-                            // Check for ball object and for all 3 angles
-                            for (int s = 0; s < 3; s ++ ) {
-                                
-                                if(checkStaticCollision(b, wall, 0) == true) {
-                                    resolveStaticCollision(b);
-                                }
-                                
-                                if(checkStaticCollision(b, wall, - 2 * Math.PI / 3) == true) {
-                                    resolveStaticCollision(b);
-                                }
-                                
-                                if(checkStaticCollision(b, wall, 2 * Math.PI / 3) == true) {
-                                    resolveStaticCollision(b);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        timer.start();
+        setCollisionChecks();
+        collisionTimer.start();
     }
 
     public void addDynamic(Ball ball) {
         dynamicObj.put(dynamicSize++, ball);
     }
 
-    public void addStatic(Rectangle wall) {
-        staticObj.put(staticSize++, wall);
+    public void addStatic(Collection<Node> walls) {
+        for (Node w : walls) {
+            staticObj.put(staticSize++, (Rectangle) w);
+        }
     }
 
     static double getDistance(Vector pos1, Vector pos2) {
@@ -96,6 +53,11 @@ public class CollisionDetection {
     // --------------- Ball - Rectangle collisions ---------------
 
     private boolean checkStaticCollision(Ball b, Rectangle wall, double angle) {
+        // 0 - no collision
+        // 1 - x collision
+        // 2 - y collision
+        // 3 - x y collision
+
         double radius = b.ball.getRadius();
 
         Vector position = rotateCoordinates(b.pos, angle, new Vector(720 / 2, 720 / 2));
@@ -109,42 +71,31 @@ public class CollisionDetection {
         double minY = wall.getY() - radius;
         double maxY = minY + wall.getHeight() + radius;
 
-        if(y >= minY && y <= maxY && x >= minX && x <= maxX) {
-            // System.out.printf("%d >= %f && %d <= %f && %d >= %f && %d <= %f\n", b.pos.y, minY, b.pos.y, maxY, b.pos.x, minX, b.pos.x, maxX);
+        if (y >= minY && y <= maxY && x >= minX && x <= maxX)
             return true;
-        }
-        
+
         return false;
     }
 
-    private boolean checkFieldCollision(Ball b) {
-        int offset = -30;
+    private void resolveStaticCollision(Ball b, double angle) {
+        Vector newVelocity = rotate(b.vel, (Math.PI / 2) - 2 * angle);
 
-        Vector center = new Vector(gameField.getCenterX(), gameField.getCenterY());
-        if(getDistance(b.pos, center) >= gameField.getRadius() + offset)
-            return true;
-        return false;
+        newVelocity.x *= bounceEffectBall;
+        newVelocity.y *= bounceEffectBall;
+
+        b.vel = newVelocity;
     }
-    
-    private void resolveStaticCollision(Ball b) {
-        System.out.print("Collision!\t");
 
-        // double effect = 0.9;
-
-        // Grab angle between the particle and center
-        double angle = -Math.atan2(gameField.getCenterY() - b.pos.y, gameField.getCenterX() - b.pos.x);
-
-        Vector Vnew = rotate(b.getVelocity(), angle);
-        
-        b.vel.x = -Vnew.x;
-        b.vel.y = -Vnew.y;
+    private void resolveSimpleStaticCollision(Ball b) {
+        b.vel.x *= -bounceEffectBall;
+        b.vel.y *= -bounceEffectBall;
     }
 
     Vector rotateCoordinates(Vector vec, double angle, Vector anchor) {
-        double sinus   = Math.sin(angle);
+        double sinus = Math.sin(angle);
         double cosinus = Math.cos(angle);
 
-        Vector temp = new Vector(0 , 0);
+        Vector temp = new Vector(0, 0);
 
         temp.x = (vec.x - anchor.x) * cosinus - (vec.y - anchor.y) * sinus + anchor.x;
         temp.y = (vec.y - anchor.y) * cosinus + (vec.x - anchor.x) * sinus + anchor.y;
@@ -154,7 +105,7 @@ public class CollisionDetection {
 
     // --------------- Ball - Ball collisions ---------------
 
-    public static boolean checkBallCollision(Ball b1, Ball b2) {        
+    public static boolean checkBallCollision(Ball b1, Ball b2) {
         double distance = getDistance(b1.pos, b2.pos);
 
         if (distance <= (b1.size + b2.size + collisionBoundary))
@@ -193,8 +144,8 @@ public class CollisionDetection {
             double m2 = otherParticle.mass;
 
             // Velocity before equation
-            Vector u1 = rotate(particle.getVelocity(), angle);
-            Vector u2 = rotate(otherParticle.getVelocity(), angle);
+            Vector u1 = rotate(particle.vel, angle);
+            Vector u2 = rotate(otherParticle.vel, angle);
 
             // Velocity after 1d collision equation
             Vector v1 = new Vector(0, 0);
@@ -217,5 +168,59 @@ public class CollisionDetection {
             otherParticle.vel.x = vFinal2.x;
             otherParticle.vel.y = vFinal2.y;
         }
+    }
+
+    // ---------- Timers and events ----------
+
+    private void setCollisionChecks() {
+        collisionTimer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // Resolve collisions between dynamic objects
+
+                for (int i = 0; i < dynamicSize; i++) {
+                    for (int j = i + 1; j < dynamicSize; j++) {
+                        Ball b1 = dynamicObj.get(i);
+                        Ball b2 = dynamicObj.get(j);
+
+                        if (checkBallCollision(b1, b2) == true) {
+                            resolveBallCollision(b1, b2);
+                        }
+                    }
+                }
+
+                // Resolve collisions between ball and static objects
+
+                for (int i = 0; i < dynamicSize; i++) {
+
+                    Ball b = dynamicObj.get(i);
+
+                    if (b.IS_BALL) {
+
+                        for (int s = 0; s < 3; s++) {
+                            if (checkStaticCollision(b, bottomFieldBorder, goalGateAngles[s])) {
+                                resolveStaticCollision(b, goalGateAngles[s]);
+                            }
+                            if (checkStaticCollision(b, bottomFieldBorder, borderAngles[s])) {
+                                resolveStaticCollision(b, borderAngles[s]);
+                            }
+                        }
+
+                        // Check for ball object and for all 3 angles
+                        for (int j = 0; j < staticSize; j++) {
+
+                            Rectangle wall = staticObj.get(j);
+
+                            for (int s = 0; s < 3; s++) {
+
+                                if (checkStaticCollision(b, wall, goalGateAngles[s])) {
+                                    resolveSimpleStaticCollision(b);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
     }
 }
