@@ -6,6 +6,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
+import static fifa.App.HEIGHT;
+import static fifa.App.WIDTH;
 import static java.lang.Math.sqrt;
 
 import javafx.scene.paint.Color;
@@ -23,37 +25,32 @@ public class PlayField {
     public Polyline goal;
     public Polygon field;
 
-    private double width;
-    private double height;
-
-    public PlayField(Elements list, double width, double height) {
-        this.width = width;
-        this.height = height;
+    public PlayField(Elements list) {
 
         goalB = createGoal(GoalType.BLUE);
         goalY = createGoal(GoalType.YELLOW);
         goalR = createGoal(GoalType.RED);
 
-        ground = new Circle(width /2, height /2, height /2, Color.GRAY);
+        ground = new Circle(WIDTH /2, HEIGHT /2, HEIGHT /2, Color.GRAY);
 
         field = new Polygon();
-        field.getPoints().addAll(width /2 - height /2, height /2,
-                width /2 - height /4, height /2 + (height /2 * sqrt(3))/2,
-                width /2 + height /4, height /2 + (height /2 * sqrt(3))/2,
-                width /2 + height /2, height /2,
-                width /2 + height /4, height /2 - (height /2 * sqrt(3)/2),
-                width /2 - height /4, height /2 - (height /2 * sqrt(3))/2);
+        field.getPoints().addAll(WIDTH /2 - HEIGHT /2, HEIGHT /2,
+                WIDTH /2 - HEIGHT /4, HEIGHT /2 + (HEIGHT /2 * sqrt(3))/2,
+                WIDTH /2 + HEIGHT /4, HEIGHT /2 + (HEIGHT /2 * sqrt(3))/2,
+                WIDTH /2 + HEIGHT /2, HEIGHT /2,
+                WIDTH /2 + HEIGHT /4, HEIGHT /2 - (HEIGHT /2 * sqrt(3)/2),
+                WIDTH /2 - HEIGHT /4, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2);
         field.setFill(Color.web("#008000",1.0));
         field.setStroke(Color.WHITE);
         field.setStrokeWidth(5);
 
-        Circle circle = new Circle(width /2, height /2, height/20, Color.TRANSPARENT);
+        Circle circle = new Circle(WIDTH /2, HEIGHT /2, HEIGHT/20, Color.TRANSPARENT);
         circle.setStroke(Color.WHITE);
         circle.setStrokeWidth(2);
 
-        Line leftLine = new Line(width/2, height/2, midpointX(width /2 - height /2, width /2 - height /4), midpointY(height /2, height /2 - (height /2 * sqrt(3))/2));
-        Line rightLine = new Line(width/2, height/2, midpointX(width /2 + height /2, width /2 + height /4), midpointY(height /2, height /2 - (height /2 * sqrt(3))/2));
-        Line downLine = new Line(width/2, height/2, midpointX(width /2 + height /4, width /2 - height /4), height /2 + (height /2 * sqrt(3)/2));
+        Line leftLine = new Line(WIDTH/2, HEIGHT/2, midpointX(WIDTH /2 - HEIGHT /2, WIDTH /2 - HEIGHT /4), midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2));
+        Line rightLine = new Line(WIDTH/2, HEIGHT/2, midpointX(WIDTH /2 + HEIGHT /2, WIDTH /2 + HEIGHT /4), midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2));
+        Line downLine = new Line(WIDTH/2, HEIGHT/2, midpointX(WIDTH /2 + HEIGHT /4, WIDTH /2 - HEIGHT /4), HEIGHT /2 + (HEIGHT /2 * sqrt(3)/2));
         leftLine.setStroke(Color.WHITE);
         leftLine.setStrokeWidth(2);
         rightLine.setStroke(Color.WHITE);
@@ -63,19 +60,19 @@ public class PlayField {
 
         int ARCLENGTH = 180;
 
-        Arc leftArc = new Arc(midpointX(width /2 - height /2, width /2 - height /4), midpointY(height /2, height /2 - (height /2 * sqrt(3))/2),width/8,width/8,240,width/6.7);
+        Arc leftArc = new Arc(midpointX(WIDTH /2 - HEIGHT /2, WIDTH /2 - HEIGHT /4), midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2),HEIGHT/5,HEIGHT/5,240,WIDTH/6.7);
         leftArc.setFill(Color.TRANSPARENT);
         leftArc.setStroke(Color.WHITE);
         leftArc.setStrokeWidth(2);
         leftArc.setLength(ARCLENGTH);
 
-        Arc rightArc = new Arc(midpointX(width /2 + height /2, width /2 + height /4), midpointY(height /2, height /2 - (height /2 * sqrt(3))/2),width/8,width/8,120,width/6.7);
+        Arc rightArc = new Arc(midpointX(WIDTH /2 + HEIGHT /2, WIDTH /2 + HEIGHT /4), midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2),HEIGHT/5,HEIGHT/5,120,WIDTH/6.7);
         rightArc.setFill(Color.TRANSPARENT);
         rightArc.setStroke(Color.WHITE);
         rightArc.setStrokeWidth(2);
         rightArc.setLength(ARCLENGTH);
 
-        Arc downArc = new Arc(midpointX(width /2 + height /4, width /2 - height /4), height /2 + (height /2 * sqrt(3)/2),width/8,width/8,0,width/6.7);
+        Arc downArc = new Arc(midpointX(WIDTH /2 + HEIGHT /4, WIDTH /2 - HEIGHT /4), HEIGHT /2 + (HEIGHT /2 * sqrt(3)/2),HEIGHT/5,HEIGHT/5,0,WIDTH/6.7);
         downArc.setFill(Color.TRANSPARENT);
         downArc.setStroke(Color.WHITE);
         downArc.setStrokeWidth(2);
@@ -103,26 +100,26 @@ public class PlayField {
         goal = new Polyline();
         switch (type) {
             case BLUE:
-                goal.getPoints().addAll(midpointX(width/2 - height/2,midpointX(width/2 - height/2, width/2 - height/4))+height/20,  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2))+height/40,
-                        midpointX(width/2 - height/2,midpointX(width/2 - height/2, width/2 - height/4)),  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
-                        midpointX(width/2 - height/4,midpointX(width/2 - height/2, width/2 - height/4)),  midpointY(height/2 - (height/2 * sqrt(3))/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
-                        midpointX(width/2 - height/4,midpointX(width/2 - height/2, width/2 - height/4))+height/20,  midpointY(height/2 - (height/2 * sqrt(3))/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2))+height/40);
+                goal.getPoints().addAll(midpointX(WIDTH /2 - HEIGHT /2,midpointX(WIDTH /2 - HEIGHT /2, WIDTH /2 - HEIGHT /4))+ HEIGHT /20,  midpointY(HEIGHT /2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2))+ HEIGHT /40,
+                        midpointX(WIDTH /2 - HEIGHT /2,midpointX(WIDTH /2 - HEIGHT /2, WIDTH /2 - HEIGHT /4)),  midpointY(HEIGHT /2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2)),
+                        midpointX(WIDTH /2 - HEIGHT /4,midpointX(WIDTH /2 - HEIGHT /2, WIDTH /2 - HEIGHT /4)),  midpointY(HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2)),
+                        midpointX(WIDTH /2 - HEIGHT /4,midpointX(WIDTH /2 - HEIGHT /2, WIDTH /2 - HEIGHT /4))+ HEIGHT /20,  midpointY(HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2))+ HEIGHT /40);
                 goal.setFill(Color.BLUE);
                 goal.setStrokeWidth(5);
                 break;
             case YELLOW:
-                goal.getPoints().addAll(midpointX(width/2 + height/2,midpointX(width/2 + height/2, width/2 + height/4))-height/20,  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2))+height/40,
-                        midpointX(width/2 + height/2,midpointX(width/2 + height/2, width/2 + height/4)),  midpointY(height/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
-                        midpointX(width/2 + height/4,midpointX(width/2 + height/2, width/2 + height/4)),  midpointY(height/2 - (height/2 * sqrt(3))/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2)),
-                        midpointX(width/2 + height/4,midpointX(width/2 + height/2, width/2 + height/4))-height/20,  midpointY(height/2 - (height/2 * sqrt(3))/2, midpointY(height/2,height/2 - (height/2 * sqrt(3))/2))+height/40);
+                goal.getPoints().addAll(midpointX(WIDTH /2 + HEIGHT /2,midpointX(WIDTH /2 + HEIGHT /2, WIDTH /2 + HEIGHT /4))- HEIGHT /20,  midpointY(HEIGHT /2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2))+ HEIGHT /40,
+                        midpointX(WIDTH /2 + HEIGHT /2,midpointX(WIDTH /2 + HEIGHT /2, WIDTH /2 + HEIGHT /4)),  midpointY(HEIGHT /2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2)),
+                        midpointX(WIDTH /2 + HEIGHT /4,midpointX(WIDTH /2 + HEIGHT /2, WIDTH /2 + HEIGHT /4)),  midpointY(HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2)),
+                        midpointX(WIDTH /2 + HEIGHT /4,midpointX(WIDTH /2 + HEIGHT /2, WIDTH /2 + HEIGHT /4))- HEIGHT /20,  midpointY(HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2, midpointY(HEIGHT /2, HEIGHT /2 - (HEIGHT /2 * sqrt(3))/2))+ HEIGHT /40);
                 goal.setFill(Color.YELLOW);
                 goal.setStrokeWidth(5);
                 break;
             case RED:
-                goal.getPoints().addAll(midpointX(width/2 + height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2) - height/20,
-                        midpointX(width/2 + height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2),
-                        midpointX(width/2 - height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2),
-                        midpointX(width/2 - height/4,midpointX(width/2 + height/4, width/2 - height/4)),  height/2 + (height/2 * sqrt(3)/2) -height/20);
+                goal.getPoints().addAll(midpointX(WIDTH /2 + HEIGHT /4,midpointX(WIDTH /2 + HEIGHT /4, WIDTH /2 - HEIGHT /4)),  HEIGHT /2 + (HEIGHT /2 * sqrt(3)/2) - HEIGHT /20,
+                        midpointX(WIDTH /2 + HEIGHT /4,midpointX(WIDTH /2 + HEIGHT /4, WIDTH /2 - HEIGHT /4)),  HEIGHT /2 + (HEIGHT /2 * sqrt(3)/2),
+                        midpointX(WIDTH /2 - HEIGHT /4,midpointX(WIDTH /2 + HEIGHT /4, WIDTH /2 - HEIGHT /4)),  HEIGHT /2 + (HEIGHT /2 * sqrt(3)/2),
+                        midpointX(WIDTH /2 - HEIGHT /4,midpointX(WIDTH /2 + HEIGHT /4, WIDTH /2 - HEIGHT /4)),  HEIGHT /2 + (HEIGHT /2 * sqrt(3)/2) - HEIGHT /20);
                 goal.setFill(Color.RED);
                 goal.setStrokeWidth(5);
                 break;
