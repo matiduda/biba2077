@@ -4,8 +4,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static fifa.App.HEIGHT;
-
 public class Ball {
 
     // Object behaviour attributes
@@ -25,7 +23,7 @@ public class Ball {
     public Vector pos;
     public Vector vel;
 
-    final double size = HEIGHT/36;
+    final int size = 20;
 
     public Circle ball;
 
@@ -54,9 +52,7 @@ public class Ball {
                 if(vel.y > 0) vel.y -= airResistance;
                 if(vel.y < 0) vel.y += airResistance;
 
-                pos.x += vel.x;
-                pos.y += vel.y;
-
+                move(vel.x, vel.y);
                 update();
             }
         };
@@ -71,6 +67,26 @@ public class Ball {
     public void update() {
         ball.setCenterX(pos.x);
         ball.setCenterY(pos.y);
+    }
+
+    private void move(double dx, double dy) {
+        Vector newPosX = new Vector(pos.x + dx, pos.y);
+        Vector newPosY = new Vector(pos.x, pos.y + dy);
+
+        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
+        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
+
+        double effect = 0.7;
+
+        if(distX < maxDistance)
+            pos.x = newPosX.x;
+        else
+            vel.x *= -effect;
+
+        if(distY < maxDistance)
+            pos.y = newPosY.y;
+        else
+            vel.y *= -effect;
     }
 
     public Vector getVelocity() {
