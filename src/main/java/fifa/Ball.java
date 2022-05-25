@@ -4,6 +4,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import static fifa.App.HEIGHT;
+
 public class Ball {
 
     // Object behaviour attributes
@@ -23,7 +25,7 @@ public class Ball {
     public Vector pos;
     public Vector vel;
 
-    final int size = 20;
+    final double size = HEIGHT/36;
 
     public Circle ball;
 

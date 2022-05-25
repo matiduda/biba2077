@@ -10,6 +10,8 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.scene.shape.Circle;
 
+import static fifa.App.HEIGHT;
+
 public class Player extends Ball {
 
     // Object behaviour attributes
@@ -20,7 +22,7 @@ public class Player extends Ball {
     //
 
     public boolean none, running, goNorth, goSouth, goEast, goWest;
-    public int size = 27;
+    public double size = HEIGHT/26;
 
     private static int playerIndex;
 
