@@ -19,7 +19,10 @@ public class CollisionDetection {
     private int dynamicSize = 0;
     private int staticSize = 0;
 
+    private final double shootingStrength = 1.40;
+
     private final double bounceEffectBall = 1.05;
+    private final double ballShootableOffset = 10.00;
 
     private final double goalGateAngles[] = { 0, -2 * Math.PI / 3, 2 * Math.PI / 3 };
     private final double borderAngles[] = { Math.PI / 3, Math.PI, 5 * Math.PI / 3 };
@@ -53,11 +56,6 @@ public class CollisionDetection {
     // --------------- Ball - Rectangle collisions ---------------
 
     private boolean checkStaticCollision(Ball b, Rectangle wall, double angle) {
-        // 0 - no collision
-        // 1 - x collision
-        // 2 - y collision
-        // 3 - x y collision
-
         double radius = b.ball.getRadius();
 
         Vector position = rotateCoordinates(b.pos, angle, new Vector(720 / 2, 720 / 2));
@@ -185,6 +183,27 @@ public class CollisionDetection {
 
                         if (checkBallCollision(b1, b2) == true) {
                             resolveBallCollision(b1, b2);
+                        }
+
+                        
+                        // Check if player can shoot the ball
+                        if(b1.IS_BALL && !b2.IS_BALL) {
+
+                            double d = getDistance(b1.pos, b2.pos);
+
+                            if(d < (b1.size + b2.size + 2 * ballShootableOffset)) {
+                                System.out.println(b2.name + " can shoot!");
+                                b2.makeShootable(true);
+
+                                if(b2.isShooting()) {
+                                    System.out.println(b2.name + " is shooting!");
+                                    b1.shoot(b2.pos, shootingStrength);
+                                    b2.makeShootable(false);
+
+                                }
+                            } else {
+                                b2.makeShootable(false);
+                            }
                         }
                     }
                 }

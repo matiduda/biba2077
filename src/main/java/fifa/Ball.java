@@ -17,6 +17,7 @@ public class Ball {
     protected double maxDistance;
 
     public boolean IS_BALL;
+    public boolean shooting = false;
 
     public Vector pos;
     public Vector vel;
@@ -24,6 +25,12 @@ public class Ball {
     final int size = 20;
 
     public Circle ball;
+
+    public String name = "ball";
+    protected boolean canShoot;
+
+    public boolean makeShootable = false;
+
 
     public Ball() {
     };
@@ -48,17 +55,28 @@ public class Ball {
 
     private void move(double dx, double dy) {
 
-        // TODO:
-        // This behaviour is for bug removal,
-        // should be deleted in final version
+            // If ball somehow escapes, spawn it at screen center
+            
+            if (CollisionDetection.getDistance(center, pos) > maxDistance) {
 
-        if (CollisionDetection.getDistance(center, pos) > maxDistance)
-            pos = new Vector(App.WIDTH / 2, App.HEIGHT / 2);
-
-        //
+                pos.x = App.WIDTH / 2;
+                pos.y = App.HEIGHT / 2;
+                vel.x = 0;
+                vel.y = 0;
+            }
+            //
 
         pos.x += dx;
         pos.y += dy;
+    }
+
+    public void shoot(Vector from, double strength) {
+        vel.x *= strength;
+        vel.y *= strength;
+    }
+
+    public boolean isShooting() {
+        return false;
     }
 
     // --------- Single use methods ---------
@@ -86,5 +104,9 @@ public class Ball {
             }
         };
         timer.start();
+    }
+
+    public void makeShootable(boolean value) {
+        makeShootable = value;
     }
 }

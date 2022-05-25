@@ -21,11 +21,15 @@ public class Player extends Ball {
     double mass = 10;
     //
 
-    public boolean none, running, goNorth, goSouth, goEast, goWest;
+    public boolean none, shooting, goNorth, goSouth, goEast, goWest;
+
+
     public double size = HEIGHT / 26;
 
-    public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field) {
+    public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field, String playerName) {
         IS_BALL = false;
+
+        name = playerName;
 
         vel = new Vector(0, 0);
         pos = new Vector(startX, startY);
@@ -33,6 +37,7 @@ public class Player extends Ball {
         ball = new Circle(0f, 0f, size);
         ball.setFill(color);
         ball.setStroke(Color.BLACK);
+        ball.setStrokeWidth(2.0);
         list.add(ball);
 
         setCenter(field);
@@ -110,8 +115,6 @@ public class Player extends Ball {
                         vel.x -= acceleration;
                 }
 
-                // if (running) { vel.x *= shiftMultiplier; vel.y *= shiftMultiplier; }
-
                 if (none) {
                     if (vel.x > 0)
                         vel.x -= airResistance;
@@ -123,6 +126,12 @@ public class Player extends Ball {
                         vel.y += airResistance;
                 }
 
+                if(makeShootable) {
+                    ball.setStroke(Color.WHITE);
+                } else {
+                    ball.setStroke(Color.BLACK);
+                }
+
                 move(vel.x, vel.y);
                 update();
             }
@@ -130,5 +139,9 @@ public class Player extends Ball {
 
         timer.start();
         return;
+    }
+
+    public boolean isShooting() {
+        return shooting;
     }
 }

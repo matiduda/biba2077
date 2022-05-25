@@ -13,7 +13,7 @@ public class App extends Application {
     // Confirure how the game starts
     boolean STARTS_FULLSCREEN = false;
     boolean IS_RESIZABLE = false;
-    boolean SHOW_HITBOX = true;
+    boolean SHOW_HITBOX = false;
 
     static double WIDTH = 720;
     static double HEIGHT = 720;
@@ -36,11 +36,11 @@ public class App extends Application {
         int offset = 100;
 
         Player player1 = new Player(elm, stage, scene, (int) WIDTH / 2 - offset, (int) HEIGHT / 2 - offset, Color.BLUE,
-                PlayField.ground);
+                PlayField.ground, "Niebieski");
         Player player2 = new Player(elm, stage, scene, (int) WIDTH / 2, (int) HEIGHT / 2 + 2 * offset, Color.RED,
-                PlayField.ground);
+                PlayField.ground, "Czerwony");
         Player player3 = new Player(elm, stage, scene, (int) WIDTH / 2 + offset, (int) HEIGHT / 2 + offset, Color.GREEN,
-                PlayField.ground);
+                PlayField.ground, "Żółty");
 
         new KeyboardInput();
 

@@ -42,7 +42,7 @@ public class KeyboardInput {
             }
 
             if (code == keys[i][4]) { // SHOOT
-                player.running = true;
+                player.shooting = true;
                 player.none = false;
             }
         }
@@ -75,7 +75,7 @@ public class KeyboardInput {
             }
 
             if (code == keys[i][4]) { // SHOOT
-                player.running = false;
+                player.shooting = false;
                 player.none = true;
             }
         }
