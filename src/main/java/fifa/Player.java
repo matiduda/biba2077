@@ -23,8 +23,7 @@ public class Player extends Ball {
 
     public boolean none, shooting, goNorth, goSouth, goEast, goWest;
 
-
-    public double size = HEIGHT / 26;
+    public double size = HEIGHT / 35;
 
     public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field, String playerName) {
         IS_BALL = false;

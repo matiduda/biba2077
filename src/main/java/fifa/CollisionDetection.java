@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 public class CollisionDetection {
 
-    private final static int collisionBoundary = 10;
+    private final static int collisionBoundary = 5;
 
     HashMap<Integer, Ball> dynamicObj = new HashMap<Integer, Ball>();
     HashMap<Integer, Rectangle> staticObj = new HashMap<Integer, Rectangle>();
@@ -19,7 +19,7 @@ public class CollisionDetection {
     private int dynamicSize = 0;
     private int staticSize = 0;
 
-    private final double shootingStrength = 1.40;
+    private final double shootingStrength = 5.0;
 
     private final double bounceEffectBall = 1.05;
     private final double ballShootableOffset = 10.00;
@@ -185,21 +185,17 @@ public class CollisionDetection {
                             resolveBallCollision(b1, b2);
                         }
 
-                        
                         // Check if player can shoot the ball
-                        if(b1.IS_BALL && !b2.IS_BALL) {
+                        if (b1.IS_BALL && !b2.IS_BALL) {
 
                             double d = getDistance(b1.pos, b2.pos);
 
-                            if(d < (b1.size + b2.size + 2 * ballShootableOffset)) {
-                                System.out.println(b2.name + " can shoot!");
+                            if (d < (b1.size + b2.size + 2 * ballShootableOffset)) {
                                 b2.makeShootable(true);
 
-                                if(b2.isShooting()) {
-                                    System.out.println(b2.name + " is shooting!");
+                                if (b2.isShooting()) {
                                     b1.shoot(b2.pos, shootingStrength);
                                     b2.makeShootable(false);
-
                                 }
                             } else {
                                 b2.makeShootable(false);

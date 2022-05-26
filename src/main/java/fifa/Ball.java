@@ -22,7 +22,7 @@ public class Ball {
     public Vector pos;
     public Vector vel;
 
-    final int size = 20;
+    final int size = 15;
 
     public Circle ball;
 
@@ -71,8 +71,17 @@ public class Ball {
     }
 
     public void shoot(Vector from, double strength) {
-        vel.x *= strength;
-        vel.y *= strength;
+        // Create a new normalized vector from 'from' to ball 'pos'
+        double Xcomponent = from.x - pos.x;
+        double Ycomponent = from.y - pos.y;
+
+        double length = Math.sqrt(Xcomponent * Xcomponent + Ycomponent * Ycomponent);
+
+        Xcomponent /= length;
+        Ycomponent /= length;
+    
+        vel.x = -Xcomponent * strength;
+        vel.y = -Ycomponent * strength;
     }
 
     public boolean isShooting() {

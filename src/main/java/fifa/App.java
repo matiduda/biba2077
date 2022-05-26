@@ -60,6 +60,8 @@ public class App extends Application {
         system.addDynamic(player2);
         system.addDynamic(player3);
 
+        Logic gameLogic = new Logic(10, elm);
+
         root.getChildren().addAll(elm.getElements());
         prepareGameWindow(stage, scene, "/icon/icon.png");
     }
