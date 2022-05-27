@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints />
+    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+      <ColumnConstraints hgrow="SOMETIMES" prefWidth="20.0" />
+      <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="300.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="20.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" prefWidth="20.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints />
+    <RowConstraints vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Rectangle fill="#181b23" height="100.0" smooth="false" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="261.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Rectangle fill="#cfff67" height="100.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="250.0" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+      <Rectangle fill="#cfff67" height="100.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="250.0" GridPane.columnIndex="8" GridPane.hgrow="ALWAYS" GridPane.vgrow="SOMETIMES" />
+      <Rectangle fill="#cfff67" height="100.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="250.0" GridPane.columnIndex="12" />
+      <Rectangle id="colorPlayer1" fill="#025fb8" height="100.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="20.0" GridPane.columnIndex="3" />
+      <Rectangle fill="#181b23" height="100.0" smooth="false" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="100.0" GridPane.columnIndex="5" />
+      <Text id="scorePlayer1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" GridPane.columnIndex="5">
+         <font>
+            <Font name="SansSerif Regular" size="62.0" />
+         </font>
+      </Text>
+      <Rectangle fill="#181b23" height="100.0" smooth="false" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="100.0" GridPane.columnIndex="9" />
+      <Text id="scorePlayer2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" GridPane.columnIndex="9">
+         <font>
+            <Font name="SansSerif Regular" size="62.0" />
+         </font>
+      </Text>
+      <Rectangle fill="#181b23" height="100.0" smooth="false" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="100.0" GridPane.columnIndex="13" />
+      <Text id="scorePlayer3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="RIGHT" GridPane.columnIndex="13">
+         <font>
+            <Font name="SansSerif Regular" size="62.0" />
+         </font>
+      </Text>
+      <Rectangle id="colorPlayer2" fill="#ff5100" height="100.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="20.0" GridPane.columnIndex="7" />
+      <Rectangle id="colorPlayer3" fill="#446b04" height="100.0" stroke="BLACK" strokeMiterLimit="0.0" strokeType="INSIDE" strokeWidth="0.0" width="20.0" GridPane.columnIndex="11" />
+      <Label id="idPlayer1" maxHeight="100.0" maxWidth="230.0" text="BLUE" textAlignment="CENTER" GridPane.columnIndex="4">
+         <font>
+            <Font size="60.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <Text id="gameTime" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00" textAlignment="RIGHT" GridPane.columnIndex="1">
+         <font>
+            <Font name="SansSerif Regular" size="62.0" />
+         </font>
+         <GridPane.margin>
+            <Insets right="20.0" />
+         </GridPane.margin>
+      </Text>
+      <Label id="idPlayer2" maxHeight="100.0" maxWidth="230.0" text="RED" textAlignment="CENTER" GridPane.columnIndex="8">
+         <font>
+            <Font size="60.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+      <Label id="idPlayer3" maxHeight="100.0" maxWidth="230.0" text="GREEN" textAlignment="CENTER" GridPane.columnIndex="12">
+         <font>
+            <Font size="60.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="20.0" />
+         </GridPane.margin>
+      </Label>
+   </children>
+</GridPane>

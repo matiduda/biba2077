@@ -27,7 +27,4 @@ replay_pid*
 # IntelliJ folder
 .idea/
 
-# VSCode files
-.vscode
-
 *Zone.Identifier
