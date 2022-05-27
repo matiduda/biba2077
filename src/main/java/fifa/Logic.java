@@ -5,7 +5,9 @@ import java.io.IOException;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -13,14 +15,18 @@ public class Logic {
 
     private long timer;
 
-    private final double PANEL_X = -450;
-    private final double PANEL_Y = -20;
+    private final double PANEL_X = -330;
+    private final double PANEL_Y = 0;
 
     private final double PANEL_SCALE = 0.5;
 
     private final int GAME_TIME_MULTIPLIER = 60; // Frames per second
 
     // -------- Elements --------
+
+    private Player p1;
+    private Player p2;
+    private Player p3;
 
     private Text gameTime;
     private int minutes;
@@ -42,16 +48,31 @@ public class Logic {
     
     private GridPane panel;
 
-    public Logic(double roundTime, Elements list) {
+    public Logic(double roundTime, Elements list, Player p1, Player p2, Player p3) {
         loadGameBar();
         loadElements();
+
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+
+        setColorsAndNames();
+        resetScores();
+
         list.add(panel);
+
         setEventsAndTimers();
         reset();
     }
     
     private void reset() {
         timer = 0;
+    }
+
+    private void resetScores() {
+        scorePlayer1.setText(String.valueOf(p1.score));
+        scorePlayer2.setText(String.valueOf(p2.score));
+        scorePlayer3.setText(String.valueOf(p3.score));
     }
 
     // ---------------- Events and timers ----------------
@@ -105,6 +126,16 @@ public class Logic {
         scorePlayer2 = (Text) panel.lookup("#scorePlayer2");
         scorePlayer3 = (Text) panel.lookup("#scorePlayer3");
         gameTime = (Text) panel.lookup("#gameTime");
+    }
+
+    private void setColorsAndNames() {
+        colorPlayer1.setFill(p1.ball.getFill());
+        colorPlayer2.setFill(p2.ball.getFill());
+        colorPlayer3.setFill(p3.ball.getFill());
+        
+        idPlayer1.setText(p1.name);
+        idPlayer2.setText(p2.name);
+        idPlayer3.setText(p3.name);
     }
 
     // --------------------------

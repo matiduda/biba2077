@@ -76,7 +76,7 @@ public class CollisionDetection {
     }
 
     private void resolveStaticCollision(Ball b, double angle) {
-        Vector newVelocity = rotate(b.vel, (Math.PI / 2) - 2 * angle);
+        Vector newVelocity = rotate(b.vel, (Math.PI / 4) - 2 * angle);
 
         newVelocity.x *= bounceEffectBall;
         newVelocity.y *= bounceEffectBall;

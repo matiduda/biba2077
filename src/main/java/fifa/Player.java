@@ -22,6 +22,7 @@ public class Player extends Ball {
     public boolean none, shooting, goNorth, goSouth, goEast, goWest;
 
     public double size = 27;
+    public int score = 0;
 
     public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field, String playerName) {
         IS_BALL = false;
@@ -42,32 +43,6 @@ public class Player extends Ball {
         KeyboardInput.add(this);
 
         setEventsAndTimers(scene, s);
-    }
-
-    private void move(double dx, double dy) {
-
-        // Why overload the move() method?
-        // Because we want to make player behaviour\
-        // different from ball's behaviour - the player
-        // has different reaction at the game border
-
-        Vector newPosX = new Vector(pos.x + dx, pos.y);
-        Vector newPosY = new Vector(pos.x, pos.y + dy);
-
-        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
-        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
-
-        double effect = 0.7;
-
-        if (distX < maxDistance)
-            pos.x = newPosX.x;
-        else
-            vel.x *= -effect;
-
-        if (distY < maxDistance)
-            pos.y = newPosY.y;
-        else
-            vel.y *= -effect;
     }
 
     // --------- Single use methods ---------
@@ -126,7 +101,7 @@ public class Player extends Ball {
         
 
                 if(makeShootable) {
-                    ball.setStroke(Color.DARKSLATEBLUE);
+                    ball.setStroke(Color.DARKORANGE);
                 } else if(!shooting) {
                     ball.setStroke(Color.BLACK);
                 } else {

@@ -15,8 +15,8 @@ public class App extends Application {
     boolean IS_RESIZABLE = false;
     boolean SHOW_HITBOX = false;
 
-    static double WIDTH = 1000;
-    static double HEIGHT = 1000;
+    static double WIDTH = 1280;
+    static double HEIGHT = 720;
     //
 
     public static void main(String[] args) {
@@ -65,7 +65,7 @@ public class App extends Application {
         system.addDynamic(player2);
         system.addDynamic(player3);
 
-        new Logic(10, elm);
+        new Logic(10, elm, player1, player2, player3);
 
         root.getChildren().addAll(elm.getElements());
         prepareGameWindow(stage, scene, "/icon/icon.png");

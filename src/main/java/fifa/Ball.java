@@ -23,6 +23,7 @@ public class Ball {
     public Vector vel;
 
     final int size = 20;
+    private final double centerOffset = 6d;
 
     public Circle ball;
 
@@ -53,22 +54,44 @@ public class Ball {
         ball.setCenterY(pos.y);
     }
 
-    private void move(double dx, double dy) {
+    protected void move(double dx, double dy) {
 
-            // If ball somehow escapes, spawn it at screen center
-            
-            if (CollisionDetection.getDistance(center, pos) > maxDistance) {
+        Vector newPosX = new Vector(pos.x + dx, pos.y);
+        Vector newPosY = new Vector(pos.x, pos.y + dy);
 
-                pos.x = App.WIDTH / 2;
-                pos.y = App.HEIGHT / 2;
-                vel.x = 0;
-                vel.y = 0;
-            }
-            //
+        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
+        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
 
-        pos.x += dx;
-        pos.y += dy;
+        double effect = 0.7;
+
+        if (distX < maxDistance)
+            pos.x = newPosX.x;
+        else
+            vel.x *= -effect;
+
+        if (distY < maxDistance)
+            pos.y = newPosY.y;
+        else
+            vel.y *= -effect;
     }
+
+    // private void move(double dx, double dy) {
+
+    //         // If ball somehow escapes, spawn it at screen center
+            
+    //         if (CollisionDetection.getDistance(center, pos) >= maxDistance) {
+
+    //             // pos.x = App.WIDTH / 2;
+    //             // pos.y = App.HEIGHT / 2;
+    //             vel.x *= -1;
+    //             vel.y *= -1;
+    //         }
+
+    //         //
+
+    //     pos.x += dx;
+    //     pos.y += dy;
+    // }
 
     public void shoot(Vector from, double strength) {
         // Create a new normalized vector from 'from' to ball 'pos'
@@ -92,7 +115,7 @@ public class Ball {
 
     public void setCenter(Circle field) {
         center = new Vector(field.getCenterX(), field.getCenterY());
-        maxDistance = field.getRadius() - ball.getRadius();
+        maxDistance = field.getRadius() - ball.getRadius() - centerOffset;
     }
 
     protected void setEventsAndTimers() {

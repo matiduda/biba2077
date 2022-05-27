@@ -99,14 +99,14 @@ public class KeyboardInput {
                 keys[i][1] = KeyCode.S;
                 keys[i][2] = KeyCode.A;
                 keys[i][3] = KeyCode.D;
-                keys[i][4] = KeyCode.SPACE;
+                keys[i][4] = KeyCode.CONTROL;
                 break;
             case 2:
                 keys[i][0] = KeyCode.I;
                 keys[i][1] = KeyCode.K;
                 keys[i][2] = KeyCode.J;
                 keys[i][3] = KeyCode.L;
-                keys[i][4] = KeyCode.CONTROL;
+                keys[i][4] = KeyCode.SPACE;
                 break;
         }
     }
