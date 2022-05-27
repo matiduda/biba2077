@@ -15,8 +15,8 @@ public class App extends Application {
     boolean IS_RESIZABLE = false;
     boolean SHOW_HITBOX = false;
 
-    static double WIDTH = 720;
-    static double HEIGHT = 720;
+    static double WIDTH = 1000;
+    static double HEIGHT = 1000;
     //
 
     public static void main(String[] args) {
@@ -25,7 +25,12 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
+        
+        if (STARTS_FULLSCREEN) {
+            WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
+            HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
+        }
+        
         Group root = new Group();
 
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.TRANSPARENT);
@@ -79,10 +84,6 @@ public class App extends Application {
         stage.setResizable(IS_RESIZABLE);
         stage.setFullScreen(STARTS_FULLSCREEN);
 
-        if (STARTS_FULLSCREEN) {
-            WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
-            HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
-        }
 
         stage.setFullScreenExitHint("Press 'q' to exit full screen mode");
         stage.setFullScreenExitKeyCombination(KeyCombination.valueOf("q"));

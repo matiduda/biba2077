@@ -10,8 +10,6 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.scene.shape.Circle;
 
-import static fifa.App.HEIGHT;
-
 public class Player extends Ball {
 
     // Object behaviour attributes
@@ -23,7 +21,7 @@ public class Player extends Ball {
 
     public boolean none, shooting, goNorth, goSouth, goEast, goWest;
 
-    public double size = HEIGHT / 35;
+    public double size = 27;
 
     public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field, String playerName) {
         IS_BALL = false;
@@ -125,10 +123,14 @@ public class Player extends Ball {
                         vel.y += airResistance;
                 }
 
+        
+
                 if(makeShootable) {
-                    ball.setStroke(Color.WHITE);
-                } else {
+                    ball.setStroke(Color.DARKSLATEBLUE);
+                } else if(!shooting) {
                     ball.setStroke(Color.BLACK);
+                } else {
+                    ball.setStroke(Color.WHITE);
                 }
 
                 move(vel.x, vel.y);

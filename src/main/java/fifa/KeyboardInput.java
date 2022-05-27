@@ -92,7 +92,7 @@ public class KeyboardInput {
                 keys[i][1] = KeyCode.DOWN;
                 keys[i][2] = KeyCode.LEFT;
                 keys[i][3] = KeyCode.RIGHT;
-                keys[i][4] = KeyCode.SHIFT;
+                keys[i][4] = KeyCode.ENTER;
                 break;
             case 1:
                 keys[i][0] = KeyCode.W;
@@ -106,7 +106,7 @@ public class KeyboardInput {
                 keys[i][1] = KeyCode.K;
                 keys[i][2] = KeyCode.J;
                 keys[i][3] = KeyCode.L;
-                keys[i][4] = KeyCode.ENTER;
+                keys[i][4] = KeyCode.CONTROL;
                 break;
         }
     }

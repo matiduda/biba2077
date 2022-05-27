@@ -22,7 +22,7 @@ public class Ball {
     public Vector pos;
     public Vector vel;
 
-    final int size = 15;
+    final int size = 20;
 
     public Circle ball;
 

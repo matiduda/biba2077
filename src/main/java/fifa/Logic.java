@@ -4,68 +4,109 @@ import java.io.IOException;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.text.Font;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 public class Logic {
 
-    private Label gameTime;
-    private long timeInSeconds = 0;
+    private long timer;
 
-    private final double timerX = 20;
-    private final double timerY = 30;
+    private final double PANEL_X = -450;
+    private final double PANEL_Y = -20;
 
-    // private GridPane panel;
+    private final double PANEL_SCALE = 0.5;
+
+    private final int GAME_TIME_MULTIPLIER = 60; // Frames per second
+
+    // -------- Elements --------
+
+    private Text gameTime;
+    private int minutes;
+    private int seconds;
+
+    private Rectangle colorPlayer1;
+    private Rectangle colorPlayer2;
+    private Rectangle colorPlayer3;
+
+    private Label idPlayer1;
+    private Label idPlayer2;
+    private Label idPlayer3;
+
+    private Text scorePlayer1;
+    private Text scorePlayer2;
+    private Text scorePlayer3;
+
+    private AnimationTimer animation;
+    
+    private GridPane panel;
 
     public Logic(double roundTime, Elements list) {
-        gameTime = new Label("00:00");
-        gameTime.setLayoutX(timerX);
-        gameTime.setLayoutY(timerY);
-        gameTime.setFont(Font.font("Verdana", 30));
-
-        BackgroundFill fill = new BackgroundFill(
-                new RadialGradient(
-                        0, 0, 0.5, 0.5, 0.5, true,
-                        CycleMethod.NO_CYCLE,
-                        new Stop(0, Color.web("#FA432233")),
-                        new Stop(1, Color.web("#00000033"))),
-                CornerRadii.EMPTY, Insets.EMPTY);
-        gameTime.setBackground(new Background(fill));
-        list.add(gameTime);
-        // list.add(panel);
-
-        // loadGameBar();
+        loadGameBar();
+        loadElements();
+        list.add(panel);
         setEventsAndTimers();
+        reset();
+    }
+    
+    private void reset() {
+        timer = 0;
     }
 
     // ---------------- Events and timers ----------------
 
     private void setEventsAndTimers() {
-        AnimationTimer timer = new AnimationTimer() {
+        animation = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                timeInSeconds++;
-                gameTime.setText(String.format("%02d:%02d", timeInSeconds / 3600, timeInSeconds / 60));
+                gameTime.setText(String.format("%02d:%02d", minutes, seconds));
+
+                if(timer++ % GAME_TIME_MULTIPLIER == 0) {
+                    // A second has passed in game time
+                    seconds++;
+                }
+                if(seconds == GAME_TIME_MULTIPLIER) {
+                    seconds = 0;
+                    minutes++;
+                }
             }
         };
-        timer.start();
+        animation.start();
     }
 
-    // private void loadGameBar() {
-    //     FXMLLoader loader = new FXMLLoader(getClass().getResource("/gamebar/bar.fxml"));
-    //     try {
-    //         panel = (GridPane) loader.load();
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+    // ---------------- FXML Object loading ----------------
+
+    private void loadGameBar() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gamebar/bar.fxml"));
+        try {
+            panel = (GridPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        panel.setLayoutX(PANEL_X);
+        panel.setLayoutY(PANEL_Y);
+
+        panel.setScaleX(PANEL_SCALE);
+        panel.setScaleY(PANEL_SCALE);
+    }
+
+    private void loadElements() {
+        colorPlayer1 = (Rectangle)panel.lookup("#colorPlayer1");
+        colorPlayer2 = (Rectangle)panel.lookup("#colorPlayer2");
+        colorPlayer3 = (Rectangle)panel.lookup("#colorPlayer3");
+        
+        idPlayer1 = (Label) panel.lookup("#idPlayer1");;
+        idPlayer2 = (Label) panel.lookup("#idPlayer1");;
+        idPlayer3 = (Label) panel.lookup("#idPlayer1");;
+        
+        scorePlayer1 = (Text) panel.lookup("#scorePlayer1");
+        scorePlayer2 = (Text) panel.lookup("#scorePlayer2");
+        scorePlayer3 = (Text) panel.lookup("#scorePlayer3");
+        gameTime = (Text) panel.lookup("#gameTime");
+    }
+
+    // --------------------------
+
 }

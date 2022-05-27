@@ -58,7 +58,7 @@ public class CollisionDetection {
     private boolean checkStaticCollision(Ball b, Rectangle wall, double angle) {
         double radius = b.ball.getRadius();
 
-        Vector position = rotateCoordinates(b.pos, angle, new Vector(720 / 2, 720 / 2));
+        Vector position = rotateCoordinates(b.pos, angle, new Vector(App.WIDTH / 2, App.HEIGHT / 2));
 
         double x = position.x;
         double y = position.y;
