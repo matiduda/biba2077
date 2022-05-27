@@ -24,7 +24,7 @@ public class Logic {
     private final double timerX = 20;
     private final double timerY = 30;
 
-    private GridPane panel;
+    // private GridPane panel;
 
     public Logic(double roundTime, Elements list) {
         gameTime = new Label("00:00");

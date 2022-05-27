@@ -40,10 +40,6 @@
                         <!-- Default configuration for running -->
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
-                        <options>
-                            <option>-Djavafx.animation.fullspeed=true</option>
-                        </options>
-
                         <configuration>
                             <mainClass>fifa.App</mainClass>
                         </configuration>
