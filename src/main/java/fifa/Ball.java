@@ -6,6 +6,7 @@ import javafx.scene.shape.Circle;
 
 public class Ball {
 
+    private static final double KICK_VOLUME = 0.7;
     // Object behaviour attributes
     int maxSpeed = 3;
     double airResistance = 0.02;
@@ -94,6 +95,10 @@ public class Ball {
     // }
 
     public void shoot(Vector from, double strength) {
+
+        // Play shooting sound
+        Sound.kick(KICK_VOLUME);
+
         // Create a new normalized vector from 'from' to ball 'pos'
         double Xcomponent = from.x - pos.x;
         double Ycomponent = from.y - pos.y;

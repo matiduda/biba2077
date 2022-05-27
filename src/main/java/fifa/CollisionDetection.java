@@ -7,9 +7,13 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
+// TODO: Increase fifa.Player.score in fifa.Logic after collision with goal bottom border
+
 public class CollisionDetection {
 
     private final static int collisionBoundary = 5;
+
+    protected static final double KICK_VOLUME = 0.0;
 
     HashMap<Integer, Ball> dynamicObj = new HashMap<Integer, Ball>();
     HashMap<Integer, Rectangle> staticObj = new HashMap<Integer, Rectangle>();
@@ -175,6 +179,7 @@ public class CollisionDetection {
             @Override
             public void handle(long now) {
                 // Resolve collisions between dynamic objects
+                boolean playSound = false;
 
                 for (int i = 0; i < dynamicSize; i++) {
                     for (int j = i + 1; j < dynamicSize; j++) {
@@ -183,6 +188,7 @@ public class CollisionDetection {
 
                         if (checkBallCollision(b1, b2) == true) {
                             resolveBallCollision(b1, b2);
+                            playSound = true;
                         }
 
                         // Check if player can shoot the ball
@@ -234,6 +240,12 @@ public class CollisionDetection {
                             }
                         }
                     }
+                }
+
+                // Play the kick sound
+
+                if(playSound) {
+                    Sound.kick(KICK_VOLUME);
                 }
             }
         };

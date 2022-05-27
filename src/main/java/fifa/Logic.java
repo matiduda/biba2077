@@ -5,11 +5,11 @@ import java.io.IOException;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+// TODO: Add round system (cooldown time and players' position reset) 
 
 public class Logic {
 

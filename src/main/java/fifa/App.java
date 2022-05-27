@@ -30,6 +30,8 @@ public class App extends Application {
             WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
             HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
         }
+
+        new Sound();
         
         Group root = new Group();
 
