@@ -37,8 +37,10 @@ public class App extends Application {
 
         Scene scene = new Scene(root, WIDTH, HEIGHT, Color.TRANSPARENT);
         Elements elm = new Elements();
+        Elements con = new Elements();
 
         new PlayField(elm);
+        new ControlScreen(con);
 
         int offset = 100;
 
@@ -70,6 +72,7 @@ public class App extends Application {
         new Logic(10, elm, player1, player2, player3);
 
         root.getChildren().addAll(elm.getElements());
+        //root.getChildren().addAll(con.getElements());
         prepareGameWindow(stage, scene, "/icon/icon.png");
     }
 
