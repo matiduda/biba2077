@@ -24,6 +24,12 @@ public class Hitboxes {
 
     // Increase size for ball collision
     private final double yBorderOffset = 10;
+    private final double yBorderHeight = 40;
+
+    private final double scoreOffset = 5;
+
+    // Special hitbox for checking score collisions
+    private static Rectangle collisionHitbox;
 
     public Hitboxes() {
         ObservableList<Double> ptsR = PlayField.goalR.getPoints();
@@ -39,14 +45,17 @@ public class Hitboxes {
         rightR.setFill(color);
         rightR.setOpacity(0.5);
 
-        Rectangle bottom = new Rectangle(ptsR.get(4), ptsR.get(5) + R_offset_y, ptsR.get(0) - ptsR.get(6),
+        Rectangle bottom = new Rectangle(ptsR.get(4), ptsR.get(5) + R_offset_y - scoreOffset, ptsR.get(0) - ptsR.get(6),
                 slupekGrubosc);
         bottom.setFill(color);
         bottom.setOpacity(0.5);
 
+        collisionHitbox = bottom;
+
         border = new Rectangle(ptsPolygon.get(2) - yBorderOffset,
-                ptsR.get(5) + R_offset_y - yBorderOffset / 2, ptsPolygon.get(4) - ptsPolygon.get(2) + 2 * yBorderOffset,
-                slupekGrubosc);
+                ptsR.get(5) + R_offset_y - yBorderOffset / 2 + scoreOffset,
+                ptsPolygon.get(4) - ptsPolygon.get(2) + 2 * yBorderOffset,
+                yBorderHeight);
         border.setFill(color);
         border.setOpacity(0.5);
 
@@ -68,5 +77,9 @@ public class Hitboxes {
             elements.add(n);
         }
         elements.add(border);
+    }
+
+    public static Rectangle getGoalHitbox() {
+        return collisionHitbox;
     }
 }

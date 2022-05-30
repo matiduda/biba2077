@@ -19,9 +19,12 @@ public class Ball {
 
     public boolean IS_BALL;
     public boolean shooting = false;
+    public boolean lockMovement = false;
 
     public Vector pos;
     public Vector vel;
+
+    protected int startX, startY;
 
     final int size = 20;
     private final double centerOffset = 6d;
@@ -32,15 +35,17 @@ public class Ball {
     protected boolean canShoot;
 
     public boolean makeShootable = false;
-
+    protected Vector startPosition;
 
     public Ball() {
     };
 
-    public Ball(Elements list, int startX, int startY, Circle field) {
+    public Ball(Elements list, Vector startPosition, Circle field) {
         IS_BALL = true;
+
+        pos = new Vector(startPosition.x, startPosition.y);
         vel = new Vector(0, 0);
-        pos = new Vector(startX, startY);
+        this.startPosition = startPosition;
 
         ball = new Circle(0f, 0f, size);
         ball.setFill(Color.WHITE);
@@ -56,6 +61,9 @@ public class Ball {
     }
 
     protected void move(double dx, double dy) {
+
+        if (lockMovement)
+            return;
 
         Vector newPosX = new Vector(pos.x + dx, pos.y);
         Vector newPosY = new Vector(pos.x, pos.y + dy);
@@ -76,24 +84,6 @@ public class Ball {
             vel.y *= -effect;
     }
 
-    // private void move(double dx, double dy) {
-
-    //         // If ball somehow escapes, spawn it at screen center
-            
-    //         if (CollisionDetection.getDistance(center, pos) >= maxDistance) {
-
-    //             // pos.x = App.WIDTH / 2;
-    //             // pos.y = App.HEIGHT / 2;
-    //             vel.x *= -1;
-    //             vel.y *= -1;
-    //         }
-
-    //         //
-
-    //     pos.x += dx;
-    //     pos.y += dy;
-    // }
-
     public void shoot(Vector from, double strength) {
 
         // Play shooting sound
@@ -107,13 +97,18 @@ public class Ball {
 
         Xcomponent /= length;
         Ycomponent /= length;
-    
+
         vel.x = -Xcomponent * strength;
         vel.y = -Ycomponent * strength;
     }
 
     public boolean isShooting() {
         return false;
+    }
+
+    public void resetPos() {
+        pos = new Vector(startPosition.x, startPosition.y);
+        vel = new Vector(0, 0);
     }
 
     // --------- Single use methods ---------

@@ -8,18 +8,18 @@ public class Sound {
 
     boolean correctlyLoadedSounds = true;
 
-
     Sound() {
-        // Check if sounds are present (they are optional and will be downloaded by a shell script)
-        
-        
+
+        // Check if sounds are present (they are optional and will be downloaded by a
+        // shell script)
+
         loadKickSound();
     }
 
     private void loadKickSound() {
         String kickSource = getClass().getResource("/sound/kick.wav").toString();
 
-        if(kickSource == null) {
+        if (kickSource == null) {
             correctlyLoadedSounds = false;
             return;
         }
@@ -28,7 +28,7 @@ public class Sound {
     }
 
     public static void kick(double volume) {
-        if(!kick.isPlaying())
+        if (!kick.isPlaying())
             kick.play(volume, 0.5, 1, 0.5, 0);
     }
 }

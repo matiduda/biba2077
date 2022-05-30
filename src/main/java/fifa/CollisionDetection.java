@@ -7,8 +7,6 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
-// TODO: Increase fifa.Player.score in fifa.Logic after collision with goal bottom border
-
 public class CollisionDetection {
 
     private final static int collisionBoundary = 5;
@@ -119,7 +117,7 @@ public class CollisionDetection {
     // Code resource from
     // https://gist.github.com/christopher4lis/f9ccb589ee8ecf751481f05a8e59b1dc
 
-    private Vector rotate(Vector vel, double angle) {
+    static Vector rotate(Vector vel, double angle) {
 
         Vector rotatedVelocities = new Vector(0, 0);
 
@@ -220,10 +218,17 @@ public class CollisionDetection {
 
                         for (int s = 0; s < 3; s++) {
                             if (checkStaticCollision(b, bottomFieldBorder, goalGateAngles[s])) {
-                                resolveStaticCollision(b, goalGateAngles[s]);
+                                if (s == 0)
+                                    resolveSimpleStaticCollision(b);
+                                else
+                                    resolveStaticCollision(b, goalGateAngles[s]);
+
                             }
                             if (checkStaticCollision(b, bottomFieldBorder, borderAngles[s])) {
-                                resolveStaticCollision(b, borderAngles[s]);
+                                if (s == 1)
+                                    resolveSimpleStaticCollision(b);
+                                else
+                                    resolveStaticCollision(b, borderAngles[s]);
                             }
                         }
 
@@ -235,6 +240,12 @@ public class CollisionDetection {
                             for (int s = 0; s < 3; s++) {
 
                                 if (checkStaticCollision(b, wall, goalGateAngles[s])) {
+
+                                    // Check for a score
+                                    if (wall.getWidth() == Hitboxes.getGoalHitbox().getWidth()) {
+                                        Logic.goalDetected(s);
+                                    }
+
                                     resolveSimpleStaticCollision(b);
                                 }
                             }
@@ -244,7 +255,7 @@ public class CollisionDetection {
 
                 // Play the kick sound
 
-                if(playSound) {
+                if (playSound) {
                     Sound.kick(KICK_VOLUME);
                 }
             }

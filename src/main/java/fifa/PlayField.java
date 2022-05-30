@@ -14,6 +14,12 @@ import javafx.scene.paint.Color;
 
 public class PlayField {
 
+        private static final double H5 = HEIGHT / 5;
+        private static final double H2 = HEIGHT / 2;
+        private static final double SQ2 = (H2 * sqrt(3)) / 2;
+        private static final double W2 = WIDTH / 2;
+        private static final double H4 = HEIGHT / 4;
+
         private enum GoalType {
                 BLUE, YELLOW, RED
         };
@@ -32,32 +38,32 @@ public class PlayField {
                 goalY = createGoal(GoalType.YELLOW);
                 goalR = createGoal(GoalType.RED);
 
-                ground = new Circle(WIDTH / 2, HEIGHT / 2, HEIGHT / 2, Color.GRAY);
+                ground = new Circle(W2, H2, H2, Color.GRAY);
 
                 field = new Polygon();
-                field.getPoints().addAll(WIDTH / 2 - HEIGHT / 2, HEIGHT / 2,
-                                WIDTH / 2 - HEIGHT / 4, HEIGHT / 2 + (HEIGHT / 2 * sqrt(3)) / 2,
-                                WIDTH / 2 + HEIGHT / 4, HEIGHT / 2 + (HEIGHT / 2 * sqrt(3)) / 2,
-                                WIDTH / 2 + HEIGHT / 2, HEIGHT / 2,
-                                WIDTH / 2 + HEIGHT / 4, HEIGHT / 2 - (HEIGHT / 2 * sqrt(3) / 2),
-                                WIDTH / 2 - HEIGHT / 4, HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2);
+                field.getPoints().addAll(W2 - H2, H2,
+                                W2 - H4, H2 + SQ2,
+                                W2 + H4, H2 + SQ2,
+                                W2 + H2, H2,
+                                W2 + H4, H2 - (H2 * sqrt(3) / 2),
+                                W2 - H4, H2 - SQ2);
                 field.setFill(Color.web("#008000", 1.0));
                 field.setStroke(Color.WHITE);
                 field.setStrokeWidth(5);
 
-                Circle circle = new Circle(WIDTH / 2, HEIGHT / 2, HEIGHT / 20, Color.TRANSPARENT);
+                Circle circle = new Circle(W2, H2, HEIGHT / 20, Color.TRANSPARENT);
                 circle.setStroke(Color.WHITE);
                 circle.setStrokeWidth(2);
 
-                Line leftLine = new Line(WIDTH / 2, HEIGHT / 2,
-                                midpointX(WIDTH / 2 - HEIGHT / 2, WIDTH / 2 - HEIGHT / 4),
-                                midpointY(HEIGHT / 2, HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2));
-                Line rightLine = new Line(WIDTH / 2, HEIGHT / 2,
-                                midpointX(WIDTH / 2 + HEIGHT / 2, WIDTH / 2 + HEIGHT / 4),
-                                midpointY(HEIGHT / 2, HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2));
-                Line downLine = new Line(WIDTH / 2, HEIGHT / 2,
-                                midpointX(WIDTH / 2 + HEIGHT / 4, WIDTH / 2 - HEIGHT / 4),
-                                HEIGHT / 2 + (HEIGHT / 2 * sqrt(3) / 2));
+                Line leftLine = new Line(W2, H2,
+                                midpointX(W2 - H2, W2 - H4),
+                                midpointY(H2, H2 - SQ2));
+                Line rightLine = new Line(W2, H2,
+                                midpointX(W2 + H2, W2 + H4),
+                                midpointY(H2, H2 - SQ2));
+                Line downLine = new Line(W2, H2,
+                                midpointX(W2 + H4, W2 - H4),
+                                H2 + (H2 * sqrt(3) / 2));
                 leftLine.setStroke(Color.WHITE);
                 leftLine.setStrokeWidth(2);
                 rightLine.setStroke(Color.WHITE);
@@ -67,8 +73,8 @@ public class PlayField {
 
                 int ARCLENGTH = 180;
 
-                Arc leftArc = new Arc(midpointX(WIDTH / 2 - HEIGHT / 2, WIDTH / 2 - HEIGHT / 4),
-                                midpointY(HEIGHT / 2, HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2), HEIGHT / 5, HEIGHT / 5,
+                Arc leftArc = new Arc(midpointX(W2 - H2, W2 - H4),
+                                midpointY(H2, H2 - SQ2), H5, H5,
                                 240,
                                 WIDTH / 6.7);
                 leftArc.setFill(Color.TRANSPARENT);
@@ -76,8 +82,8 @@ public class PlayField {
                 leftArc.setStrokeWidth(2);
                 leftArc.setLength(ARCLENGTH);
 
-                Arc rightArc = new Arc(midpointX(WIDTH / 2 + HEIGHT / 2, WIDTH / 2 + HEIGHT / 4),
-                                midpointY(HEIGHT / 2, HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2), HEIGHT / 5, HEIGHT / 5,
+                Arc rightArc = new Arc(midpointX(W2 + H2, W2 + H4),
+                                midpointY(H2, H2 - SQ2), H5, H5,
                                 120,
                                 WIDTH / 6.7);
                 rightArc.setFill(Color.TRANSPARENT);
@@ -85,8 +91,8 @@ public class PlayField {
                 rightArc.setStrokeWidth(2);
                 rightArc.setLength(ARCLENGTH);
 
-                Arc downArc = new Arc(midpointX(WIDTH / 2 + HEIGHT / 4, WIDTH / 2 - HEIGHT / 4),
-                                HEIGHT / 2 + (HEIGHT / 2 * sqrt(3) / 2), HEIGHT / 5, HEIGHT / 5, 0, WIDTH / 6.7);
+                Arc downArc = new Arc(midpointX(W2 + H4, W2 - H4),
+                                H2 + (H2 * sqrt(3) / 2), H5, H5, 0, WIDTH / 6.7);
                 downArc.setFill(Color.TRANSPARENT);
                 downArc.setStroke(Color.WHITE);
                 downArc.setStrokeWidth(2);
@@ -116,87 +122,85 @@ public class PlayField {
                 switch (type) {
                         case BLUE:
                                 goal.getPoints().addAll(
-                                                midpointX(WIDTH / 2 - HEIGHT / 2,
-                                                                midpointX(WIDTH / 2 - HEIGHT / 2,
-                                                                                WIDTH / 2 - HEIGHT / 4))
+                                                midpointX(W2 - H2,
+                                                                midpointX(W2 - H2,
+                                                                                W2 - H4))
                                                                 + HEIGHT / 20,
-                                                midpointY(HEIGHT / 2, midpointY(HEIGHT / 2,
-                                                                HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2))
+                                                midpointY(H2, midpointY(H2,
+                                                                H2 - SQ2))
                                                                 + HEIGHT / 40,
-                                                midpointX(WIDTH / 2 - HEIGHT / 2,
-                                                                midpointX(WIDTH / 2 - HEIGHT / 2,
-                                                                                WIDTH / 2 - HEIGHT / 4)),
-                                                midpointY(HEIGHT / 2, midpointY(HEIGHT / 2,
-                                                                HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2)),
-                                                midpointX(WIDTH / 2 - HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 - HEIGHT / 2,
-                                                                                WIDTH / 2 - HEIGHT / 4)),
-                                                midpointY(HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2,
-                                                                midpointY(HEIGHT / 2,
-                                                                                HEIGHT / 2 - (HEIGHT / 2 * sqrt(3))
-                                                                                                / 2)),
-                                                midpointX(WIDTH / 2 - HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 - HEIGHT / 2,
-                                                                                WIDTH / 2 - HEIGHT / 4))
+                                                midpointX(W2 - H2,
+                                                                midpointX(W2 - H2,
+                                                                                W2 - H4)),
+                                                midpointY(H2, midpointY(H2,
+                                                                H2 - SQ2)),
+                                                midpointX(W2 - H4,
+                                                                midpointX(W2 - H2,
+                                                                                W2 - H4)),
+                                                midpointY(H2 - SQ2,
+                                                                midpointY(H2,
+                                                                                H2 - SQ2)),
+                                                midpointX(W2 - H4,
+                                                                midpointX(W2 - H2,
+                                                                                W2 - H4))
                                                                 + HEIGHT / 20,
-                                                midpointY(HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2,
-                                                                midpointY(HEIGHT / 2, HEIGHT / 2
-                                                                                - (HEIGHT / 2 * sqrt(3)) / 2))
+                                                midpointY(H2 - SQ2,
+                                                                midpointY(H2, H2
+                                                                                - SQ2))
                                                                 + HEIGHT / 40);
-                                goal.setFill(Color.BLUE);
+                                goal.setFill(App.PLAYERS[1]);
                                 goal.setStrokeWidth(5);
                                 break;
                         case YELLOW:
                                 goal.getPoints().addAll(
-                                                midpointX(WIDTH / 2 + HEIGHT / 2,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 2,
-                                                                                WIDTH / 2 + HEIGHT / 4))
+                                                midpointX(W2 + H2,
+                                                                midpointX(W2 + H2,
+                                                                                W2 + H4))
                                                                 - HEIGHT / 20,
-                                                midpointY(HEIGHT / 2, midpointY(HEIGHT / 2,
-                                                                HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2))
+                                                midpointY(H2, midpointY(H2,
+                                                                H2 - SQ2))
                                                                 + HEIGHT / 40,
-                                                midpointX(WIDTH / 2 + HEIGHT / 2,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 2,
-                                                                                WIDTH / 2 + HEIGHT / 4)),
-                                                midpointY(HEIGHT / 2, midpointY(HEIGHT / 2,
-                                                                HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2)),
-                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 2,
-                                                                                WIDTH / 2 + HEIGHT / 4)),
-                                                midpointY(HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2,
-                                                                midpointY(HEIGHT / 2,
-                                                                                HEIGHT / 2 - (HEIGHT / 2 * sqrt(3))
-                                                                                                / 2)),
-                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 2,
-                                                                                WIDTH / 2 + HEIGHT / 4))
+                                                midpointX(W2 + H2,
+                                                                midpointX(W2 + H2,
+                                                                                W2 + H4)),
+                                                midpointY(H2, midpointY(H2,
+                                                                H2 - SQ2)),
+                                                midpointX(W2 + H4,
+                                                                midpointX(W2 + H2,
+                                                                                W2 + H4)),
+                                                midpointY(H2 - SQ2,
+                                                                midpointY(H2,
+                                                                                H2 - SQ2)),
+                                                midpointX(W2 + H4,
+                                                                midpointX(W2 + H2,
+                                                                                W2 + H4))
                                                                 - HEIGHT / 20,
-                                                midpointY(HEIGHT / 2 - (HEIGHT / 2 * sqrt(3)) / 2,
-                                                                midpointY(HEIGHT / 2, HEIGHT / 2
-                                                                                - (HEIGHT / 2 * sqrt(3)) / 2))
+                                                midpointY(H2 - SQ2,
+                                                                midpointY(H2, H2
+                                                                                - SQ2))
                                                                 + HEIGHT / 40);
-                                goal.setFill(Color.YELLOW);
+                                goal.setFill(App.PLAYERS[2]);
                                 goal.setStrokeWidth(5);
                                 break;
                         case RED:
                                 goal.getPoints().addAll(
-                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                                WIDTH / 2 - HEIGHT / 4)),
-                                                HEIGHT / 2 + (HEIGHT / 2 * sqrt(3) / 2) - HEIGHT / 20,
-                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                                WIDTH / 2 - HEIGHT / 4)),
-                                                HEIGHT / 2 + (HEIGHT / 2 * sqrt(3) / 2),
-                                                midpointX(WIDTH / 2 - HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                                WIDTH / 2 - HEIGHT / 4)),
-                                                HEIGHT / 2 + (HEIGHT / 2 * sqrt(3) / 2),
-                                                midpointX(WIDTH / 2 - HEIGHT / 4,
-                                                                midpointX(WIDTH / 2 + HEIGHT / 4,
-                                                                                WIDTH / 2 - HEIGHT / 4)),
-                                                HEIGHT / 2 + (HEIGHT / 2 * sqrt(3) / 2) - HEIGHT / 20);
-                                goal.setFill(Color.RED);
+                                                midpointX(W2 + H4,
+                                                                midpointX(W2 + H4,
+                                                                                W2 - H4)),
+                                                H2 + (H2 * sqrt(3) / 2) - HEIGHT / 20,
+                                                midpointX(W2 + H4,
+                                                                midpointX(W2 + H4,
+                                                                                W2 - H4)),
+                                                H2 + (H2 * sqrt(3) / 2),
+                                                midpointX(W2 - H4,
+                                                                midpointX(W2 + H4,
+                                                                                W2 - H4)),
+                                                H2 + (H2 * sqrt(3) / 2),
+                                                midpointX(W2 - H4,
+                                                                midpointX(W2 + H4,
+                                                                                W2 - H4)),
+                                                H2 + (H2 * sqrt(3) / 2) - HEIGHT / 20);
+                                goal.setFill(App.PLAYERS[0]);
                                 goal.setStrokeWidth(5);
                                 break;
                 }

@@ -24,13 +24,14 @@ public class Player extends Ball {
     public double size = 27;
     public int score = 0;
 
-    public Player(Elements list, Stage s, Scene scene, int startX, int startY, Paint color, Circle field, String playerName) {
+    public Player(Elements list, Stage s, Scene scene, Vector startPos, Paint color, Circle field, String name) {
         IS_BALL = false;
 
-        name = playerName;
+        this.name = name;
 
+        pos = new Vector(startPos.x, startPos.y);
         vel = new Vector(0, 0);
-        pos = new Vector(startX, startY);
+        this.startPosition = startPos;
 
         ball = new Circle(0f, 0f, size);
         ball.setFill(color);
@@ -98,11 +99,9 @@ public class Player extends Ball {
                         vel.y += airResistance;
                 }
 
-        
-
-                if(makeShootable) {
+                if (makeShootable) {
                     ball.setStroke(Color.DARKORANGE);
-                } else if(!shooting) {
+                } else if (!shooting) {
                     ball.setStroke(Color.BLACK);
                 } else {
                     ball.setStroke(Color.WHITE);
