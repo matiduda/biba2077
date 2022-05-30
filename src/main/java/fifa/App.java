@@ -14,13 +14,13 @@ public class App extends Application {
 
     boolean STARTS_FULLSCREEN = false;
     boolean IS_RESIZABLE = false;
-    boolean SHOW_HITBOX = true;
+    boolean SHOW_HITBOX = false;
 
     static double WIDTH = 1280;
     static double HEIGHT = 720;
 
     public final static Color PLAYERS[] = { Color.BLUE, Color.RED, Color.YELLOW };
-    public final static String NAMES[] = { "NIEB", "CZER", "ZOLC" };
+    public final static String NAMES[] = { "Wojta", "Mati", "Janek" };
 
     //
 

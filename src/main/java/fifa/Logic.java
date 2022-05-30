@@ -1,6 +1,7 @@
 package fifa;
 
 import java.io.IOException;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
@@ -16,13 +17,16 @@ public class Logic {
 
     private final double PANEL_X = -330;
     private final double PANEL_Y = 0;
-
     private final double PANEL_SCALE = 0.5;
+
+    private final double TEXTBOX_X = App.WIDTH / 2 - 150;
+    private final double TEXTBOX_Y = 150;
+    private final double TEXTBOX_SCALE = 1;
 
     private final static int GAME_TIME_MULTIPLIER = 60; // Frames per second
 
     private final static int AFTER_GOAL_DELAY_IN_SEC = 5;
-    private final static int START_ROUND_FREEZE_TIME_IN_SEC = 3;
+    private final static int START_ROUND_FREEZE_TIME_IN_SEC = 5;
 
     // -------- Elements --------
 
@@ -52,15 +56,32 @@ public class Logic {
 
     private GridPane panel;
 
+    // ----- Text box -----
+
+    private static Text info;
+    private static Text timeToStart;
+
+    private static Rectangle textBoxTimeBack;
+
+    private static GridPane textBox;
+
     // ----- Game stats -----
 
     private static int currentRound;
     private static int nextRoundDelay;
     private static int startFreeze;
     private static boolean wait;
+    private static boolean roundBegun;
+
+
+    // ----- Round win info -----
+
+    private static String loserName;
+    private static final String winInfos[] = {"będzie kopany...", "coś nie wyszło...", ", pozdro poćwicz", "wstał lewą nogą", "to nie jego dzień", "zaraz się odegra", "zobaczył samolot", "nie wypił kawy", "xD", "xDDDD", "to lama (żartuję)", "będzie kopany mocno", "złapał laga", " - ALE ZAWIAŁO ŁE", "to lama (serio)", "jest dominowany", ":))"};
 
     public Logic(double roundTime, Elements list, Player p1, Player p2, Player p3, Ball b) {
         loadGameBar();
+        loadTextBox();
         loadElements();
 
         Logic.p1 = p1;
@@ -72,12 +93,13 @@ public class Logic {
         resetScores();
 
         list.add(panel);
+        list.add(textBox);
 
         setEventsAndTimers();
-        reset();
+        resetGame();
     }
 
-    private void reset() {
+    private void resetGame() {
         timer = 0;
         currentRound = 0;
         wait = false;
@@ -98,6 +120,13 @@ public class Logic {
         currentRound++;
 
         updateScores(angle);
+        
+        textBox.setVisible(true);
+
+        int rnd = new Random().nextInt(winInfos.length);
+        info.setText(String.format("%s %s", loserName, winInfos[rnd]));
+        timeToStart.setVisible(false);
+        textBoxTimeBack.setVisible(false);
 
         wait = true;
     }
@@ -125,15 +154,17 @@ public class Logic {
             case 0:
                 p1.score++;
                 scorePlayer1.setText(String.valueOf(p1.score));
-
+                loserName = p1.name;
                 break;
             case 1:
                 p2.score++;
                 scorePlayer2.setText(String.valueOf(p2.score));
+                loserName = p2.name;
                 break;
             case 2:
                 p3.score++;
                 scorePlayer3.setText(String.valueOf(p3.score));
+                loserName = p3.name;
                 break;
         }
 
@@ -163,6 +194,7 @@ public class Logic {
 
     private void setEventsAndTimers() {
         animation = new AnimationTimer() {
+
             @Override
             public void handle(long now) {
 
@@ -184,7 +216,6 @@ public class Logic {
 
                 if (nextRoundDelay > 0) {
                     nextRoundDelay--;
-                    System.out.println("Next round in " + nextRoundDelay + " seconds...");
                 } else if (wait) {
                     p1.resetPos();
                     p2.resetPos();
@@ -194,15 +225,23 @@ public class Logic {
                     wait = false;
 
                     startFreeze = GAME_TIME_MULTIPLIER * START_ROUND_FREEZE_TIME_IN_SEC;
+                    textBox.setVisible(true);
+                    timeToStart.setVisible(true);
+                    textBoxTimeBack.setVisible(true);
 
+                    roundBegun = false;
                     lockPlayers();
                 }
 
                 if (startFreeze > 0) {
                     startFreeze--;
-                    System.out.println("Starting round in " + startFreeze + " seconds...");
-                } else {
+                    info.setText(String.format("Runda %d rozpocznie się za", currentRound));
+                    timeToStart.setText(String.format("%02d:%02d", startFreeze / GAME_TIME_MULTIPLIER,
+                            startFreeze % GAME_TIME_MULTIPLIER / 5));
+                } else if(!roundBegun) {
+                    textBox.setVisible(false);
                     unlockPlayers();
+                    roundBegun = true;
                 }
             }
         };
@@ -226,22 +265,39 @@ public class Logic {
         panel.setScaleY(PANEL_SCALE);
     }
 
+    private void loadTextBox() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gamebar/textBox.fxml"));
+        try {
+            textBox = (GridPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        textBox.setLayoutX(TEXTBOX_X);
+        textBox.setLayoutY(TEXTBOX_Y);
+
+        textBox.setScaleX(TEXTBOX_SCALE);
+        textBox.setScaleY(TEXTBOX_SCALE);
+    }
+
     private void loadElements() {
         colorPlayer1 = (Rectangle) panel.lookup("#colorPlayer1");
         colorPlayer2 = (Rectangle) panel.lookup("#colorPlayer2");
         colorPlayer3 = (Rectangle) panel.lookup("#colorPlayer3");
 
         idPlayer1 = (Label) panel.lookup("#idPlayer1");
-        ;
         idPlayer2 = (Label) panel.lookup("#idPlayer2");
-        ;
         idPlayer3 = (Label) panel.lookup("#idPlayer3");
-        ;
 
         scorePlayer1 = (Text) panel.lookup("#scorePlayer1");
         scorePlayer2 = (Text) panel.lookup("#scorePlayer2");
         scorePlayer3 = (Text) panel.lookup("#scorePlayer3");
+
         gameTime = (Text) panel.lookup("#gameTime");
+
+        info = (Text) textBox.lookup("#textBoxTitle");
+        timeToStart = (Text) textBox.lookup("#textBoxTime");
+        textBoxTimeBack = (Rectangle) textBox.lookup("#textBoxTimeBack");
+
     }
 
     private void setColorsAndNames() {
