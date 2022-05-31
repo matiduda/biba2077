@@ -8,7 +8,7 @@ A game made in JavaFX based on the concept of <a href="https://en.wikipedia.org/
 
 ## Additional resources
 
-The game is missing additional sound effects and music. You can download it <a href="https://bayfiles.com/j87bJ0lbye/sound_rar">using this link</a>. Simlpy unzip the files to the corresponding folders in `src/main/resources/sound`.
+The game is missing additional sound effects and music. You can download it <a href="https://bayfiles.com/j87bJ0lbye/sound_rar">using this link</a>. Simply unzip the archive content to the corresponding folders in `src/main/resources/sound`.
 
 ## Special thanks
 
