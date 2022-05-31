@@ -31,3 +31,7 @@ replay_pid*
 .vscode/
 
 *Zone.Identifier
+
+# Music and commentary files
+src/main/resources/sound/com/*
+src/main/resources/sound/music/*

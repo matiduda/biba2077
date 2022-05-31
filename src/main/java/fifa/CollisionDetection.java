@@ -258,6 +258,9 @@ public class CollisionDetection {
                 if (playSound) {
                     Sound.kick(KICK_VOLUME);
                 }
+
+                // Play music
+                Sound.music();
             }
         };
     }

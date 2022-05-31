@@ -113,6 +113,8 @@ public class Logic {
         if (nextRoundDelay > 0)
             return;
 
+        Sound.commentary();
+
         nextRoundDelay = GAME_TIME_MULTIPLIER * AFTER_GOAL_DELAY_IN_SEC;
 
         // Finish round
@@ -125,6 +127,7 @@ public class Logic {
 
         int rnd = new Random().nextInt(winInfos.length);
         info.setText(String.format("%s %s", loserName, winInfos[rnd]));
+
         timeToStart.setVisible(false);
         textBoxTimeBack.setVisible(false);
 
