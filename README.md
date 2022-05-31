@@ -1,6 +1,6 @@
-<p style="text-align:center;">
+<div style="text-align:center;">
     <img src="src/main/resources/logo/biba_white_shadow_transparent.png" style="align:center;" alt="BIBA 2077 logo" width="60%">
-</p>
+</div>
 
 ## Project description
 
