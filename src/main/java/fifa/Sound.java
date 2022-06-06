@@ -8,7 +8,7 @@ import javafx.scene.media.AudioClip;
 
 public class Sound {
 
-    private static final double MUSIC_VOLUME = 0.15;
+    private static final double MUSIC_VOLUME = 0.30;
 
     private static AudioClip kick = null;
 
@@ -48,7 +48,7 @@ public class Sound {
     public static void commentary() {
         if (correctlyLoadedComm) {
             int r = new Random().nextInt(NUMBER_OF_COM_ENTRIES);
-            commentary.get(r).play();
+            commentary.get(r).play(0.5);
         }
     }
 
@@ -63,7 +63,7 @@ public class Sound {
         currentTrack = tracks.get(currentTrackInd);
         currentTrackInd++;
         currentTrack.play(MUSIC_VOLUME);
-        // System.out.println(String"Playing " + currentTrackInd - 1);
+        System.out.println("Playing " + (currentTrackInd - 1));
     }
 
     // --------- Loading sounds ---------
