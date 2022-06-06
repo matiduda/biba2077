@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    public static boolean STARTS_FULLSCREEN = true;
+    public static boolean STARTS_FULLSCREEN = false;
 
     public static double WIDTH = 1280;
     public static double HEIGHT = 720;
@@ -51,6 +51,7 @@ public class App extends Application {
         stage.setMinHeight(720);
 
         stage.setFullScreenExitKeyCombination(KeyCombination.valueOf("q"));
+        stage.setFullScreenExitHint("Aby wyłączyć pełny ekran naciśnij Q");
     }
 
 }

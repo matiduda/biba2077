@@ -15,9 +15,9 @@ public class Logic {
 
     private static long timer;
 
-    private final double PANEL_X = -30;
-    private final double PANEL_Y = 0;
-    private final double PANEL_SCALE = 0.6;
+    private final double PANEL_X = -80;
+    private final double PANEL_Y = -30;
+    private final double PANEL_SCALE = 0.4;
 
     private final double TEXTBOX_X = App.WIDTH / 2 - 150;
     private final double TEXTBOX_Y = 150;
