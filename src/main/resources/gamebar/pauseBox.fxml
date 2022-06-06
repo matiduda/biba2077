@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="fifa.SceneController">
+  <columnConstraints>
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="0.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Rectangle arcHeight="25.0" arcWidth="25.0" fill="#000000ab" height="150.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="150.0" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#resumeGame" prefWidth="90.0" text="Resume" />
+      <Button mnemonicParsing="false" onAction="#resetGame" prefWidth="90.0" text="Reset" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#handleCloseButtonAction" prefWidth="90.0" text="Quit" GridPane.rowIndex="2" />
+   </children>
+</GridPane>

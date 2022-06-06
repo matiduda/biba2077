@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 
 public class Logic {
 
-    private long timer;
+    private static long timer;
 
     private final double PANEL_X = -330;
     private final double PANEL_Y = 0;
@@ -22,6 +22,10 @@ public class Logic {
     private final double TEXTBOX_X = App.WIDTH / 2 - 150;
     private final double TEXTBOX_Y = 150;
     private final double TEXTBOX_SCALE = 1;
+
+    private final double PAUSEBOX_X = App.WIDTH / 2 - 75;
+    private final double PAUSEBOX_Y = App.WIDTH / 2 - 75;
+    private final double PAUSEBOX_SCALE = 1.5;
 
     private final static int GAME_TIME_MULTIPLIER = 60; // Frames per second
 
@@ -37,8 +41,8 @@ public class Logic {
     private static Ball b;
 
     private Text gameTime;
-    private int minutes;
-    private int seconds;
+    private static int minutes;
+    private static int seconds;
 
     private Rectangle colorPlayer1;
     private Rectangle colorPlayer2;
@@ -65,6 +69,10 @@ public class Logic {
 
     private static GridPane textBox;
 
+    // ----- Pause box -----
+
+    private static GridPane pauseBox;
+
     // ----- Game stats -----
 
     private static int currentRound;
@@ -82,6 +90,7 @@ public class Logic {
     public Logic(double roundTime, Elements list, Player p1, Player p2, Player p3, Ball b) {
         loadGameBar();
         loadTextBox();
+        loadPauseBox();
         loadElements();
 
         Logic.p1 = p1;
@@ -94,17 +103,21 @@ public class Logic {
 
         list.add(panel);
         list.add(textBox);
+        list.add(pauseBox);
 
         setEventsAndTimers();
         resetGame();
     }
 
-    private void resetGame() {
+    private static void resetGame() {
         timer = 0;
-        currentRound = 0;
-        wait = false;
+        seconds = 0;
+        minutes = 0;
+        currentRound = 1;
+        wait = true;
         startFreeze = GAME_TIME_MULTIPLIER * START_ROUND_FREEZE_TIME_IN_SEC;
         lockPlayers();
+        resetScores();
     }
 
     public static void goalDetected(int angle) {
@@ -134,7 +147,7 @@ public class Logic {
         wait = true;
     }
 
-    private void lockPlayers() {
+    private static void lockPlayers() {
         p1.lockMovement = true;
         p2.lockMovement = true;
         p3.lockMovement = true;
@@ -146,10 +159,19 @@ public class Logic {
         p3.lockMovement = false;
     }
 
-    private void resetScores() {
+    private static void resetScores() {
+        p1.score = 0;
+        p2.score = 0;
+        p3.score = 0;
+
         scorePlayer1.setText(String.valueOf(p1.score));
         scorePlayer2.setText(String.valueOf(p2.score));
         scorePlayer3.setText(String.valueOf(p3.score));
+
+
+        scorePlayer1.setFill(Color.WHITE);
+        scorePlayer2.setFill(Color.WHITE);
+        scorePlayer3.setFill(Color.WHITE);
     }
 
     private static void updateScores(int player) {
@@ -192,6 +214,21 @@ public class Logic {
         if (p3.score == minScore)
             scorePlayer3.setFill(Color.LIGHTGREEN);
     }
+
+    // ---------------- Pause function ----------------
+
+    public static void displayPause() {
+        pauseBox.setVisible(true);
+    }
+
+    public static void resumeGame() {
+        pauseBox.setVisible(false);
+    }
+
+    public static void pauseResetGame() {
+        pauseBox.setVisible(false);
+        resetGame();
+    }   
 
     // ---------------- Events and timers ----------------
 
@@ -280,6 +317,22 @@ public class Logic {
 
         textBox.setScaleX(TEXTBOX_SCALE);
         textBox.setScaleY(TEXTBOX_SCALE);
+    }
+
+    private void loadPauseBox() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/gamebar/pauseBox.fxml"));
+        try {
+            pauseBox = (GridPane) loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pauseBox.setLayoutX(PAUSEBOX_X);
+        pauseBox.setLayoutY(PAUSEBOX_Y);
+
+        pauseBox.setScaleX(PAUSEBOX_SCALE);
+        pauseBox.setScaleY(PAUSEBOX_SCALE);
+        pauseBox.setVisible(false);
     }
 
     private void loadElements() {

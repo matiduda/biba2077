@@ -45,6 +45,9 @@ public class KeyboardInput {
                 player.shooting = true;
                 player.none = false;
             }
+
+            if(code == KeyCode.P)
+                Logic.displayPause();
         }
     }
 

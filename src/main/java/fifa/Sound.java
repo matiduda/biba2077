@@ -8,7 +8,7 @@ import javafx.scene.media.AudioClip;
 
 public class Sound {
 
-    private static final double MUSIC_VOLUME = 0.30;
+    private static final double MUSIC_VOLUME = 0.15;
 
     private static AudioClip kick = null;
 
@@ -24,7 +24,7 @@ public class Sound {
     
     private final static int NUMBER_OF_TRACK_ENTRIES = 9;
     private static HashMap<Integer, AudioClip> tracks = new HashMap<Integer, AudioClip>();
-    private static int currentTrackInd = 0;
+    private static int currentTrackInd = new Random().nextInt(NUMBER_OF_COM_ENTRIES);
     private static AudioClip currentTrack = null;
 
     public Sound() {
@@ -57,13 +57,15 @@ public class Sound {
             return;
         if (currentTrack != null && currentTrack.isPlaying())
             return;
-        if(currentTrackInd == NUMBER_OF_TRACK_ENTRIES)
-            currentTrackInd = 0;
 
+        int newIndex = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);;
+        while(currentTrackInd == newIndex)
+            newIndex = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);
+
+        currentTrackInd = newIndex;
+        currentTrackInd = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);
         currentTrack = tracks.get(currentTrackInd);
-        currentTrackInd++;
         currentTrack.play(MUSIC_VOLUME);
-        System.out.println("Playing " + (currentTrackInd - 1));
     }
 
     // --------- Loading sounds ---------

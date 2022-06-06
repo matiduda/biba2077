@@ -148,7 +148,7 @@ public class PlayField {
                                                                 midpointY(H2, H2
                                                                                 - SQ2))
                                                                 + HEIGHT / 40);
-                                goal.setFill(App.PLAYERS[1]);
+                                goal.setFill(Game.PLAYERS[1]);
                                 goal.setStrokeWidth(5);
                                 break;
                         case YELLOW:
@@ -179,7 +179,7 @@ public class PlayField {
                                                                 midpointY(H2, H2
                                                                                 - SQ2))
                                                                 + HEIGHT / 40);
-                                goal.setFill(App.PLAYERS[2]);
+                                goal.setFill(Game.PLAYERS[2]);
                                 goal.setStrokeWidth(5);
                                 break;
                         case RED:
@@ -200,7 +200,7 @@ public class PlayField {
                                                                 midpointX(W2 + H4,
                                                                                 W2 - H4)),
                                                 H2 + (H2 * sqrt(3) / 2) - HEIGHT / 20);
-                                goal.setFill(App.PLAYERS[0]);
+                                goal.setFill(Game.PLAYERS[0]);
                                 goal.setStrokeWidth(5);
                                 break;
                 }

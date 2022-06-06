@@ -24,7 +24,7 @@ public class Player extends Ball {
     public double size = 27;
     public int score = 0;
 
-    public Player(Elements list, Stage s, Scene scene, Vector startPos, Paint color, Circle field, String name) {
+    public Player(Elements list, Scene scene, Vector startPos, Paint color, Circle field, String name) {
         IS_BALL = false;
 
         this.name = name;
@@ -43,12 +43,12 @@ public class Player extends Ball {
 
         KeyboardInput.add(this);
 
-        setEventsAndTimers(scene, s);
+        setEventsAndTimers(scene);
     }
 
     // --------- Single use methods ---------
 
-    protected void setEventsAndTimers(Scene scene, Stage s) {
+    protected void setEventsAndTimers(Scene scene) {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -65,9 +65,6 @@ public class Player extends Ball {
                 KeyboardInput.setInputOnKeyReleased(code);
             }
         });
-
-        s.setScene(scene);
-        s.show();
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
