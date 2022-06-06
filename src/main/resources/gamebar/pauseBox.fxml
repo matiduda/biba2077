@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="fifa.SceneController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fifa.SceneController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="0.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Rectangle arcHeight="25.0" arcWidth="25.0" fill="#000000ab" height="150.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="150.0" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onAction="#resumeGame" prefWidth="90.0" text="Resume" />
-      <Button mnemonicParsing="false" onAction="#resetGame" prefWidth="90.0" text="Reset" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" onAction="#handleCloseButtonAction" prefWidth="90.0" text="Quit" GridPane.rowIndex="2" />
+      <Rectangle arcHeight="30.0" arcWidth="30.0" height="300.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="300.0" GridPane.rowIndex="1">
+         <fill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color opacity="0.6091570854187012" />
+                     </color>
+                  </Stop>
+                  <Stop offset="0.006711409395973154">
+                     <color>
+                        <Color opacity="0.6091570854187012" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.3400000035762787" green="0.3400000035762787" blue="0.3400000035762787" opacity="0.5248658657073975" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+         <effect>
+            <DropShadow blurType="GAUSSIAN" radius="13.645" width="35.58">
+               <color>
+                  <Color opacity="0.4176245331764221" />
+               </color>
+            </DropShadow>
+         </effect></Rectangle>
+      <Button mnemonicParsing="false" onAction="#resumeGame" prefWidth="150.0" text="Resume" />
+      <Button mnemonicParsing="false" onAction="#resetGame" prefWidth="150.0" text="Reset" GridPane.rowIndex="1" />
+      <Button mnemonicParsing="false" onAction="#handleCloseButtonAction" prefWidth="150.0" text="Quit" GridPane.rowIndex="2" />
    </children>
 </GridPane>

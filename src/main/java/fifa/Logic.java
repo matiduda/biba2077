@@ -15,17 +15,17 @@ public class Logic {
 
     private static long timer;
 
-    private final double PANEL_X = -330;
+    private final double PANEL_X = -30;
     private final double PANEL_Y = 0;
-    private final double PANEL_SCALE = 0.5;
+    private final double PANEL_SCALE = 0.6;
 
     private final double TEXTBOX_X = App.WIDTH / 2 - 150;
     private final double TEXTBOX_Y = 150;
     private final double TEXTBOX_SCALE = 1;
 
-    private final double PAUSEBOX_X = App.WIDTH / 2 - 75;
-    private final double PAUSEBOX_Y = App.WIDTH / 2 - 75;
-    private final double PAUSEBOX_SCALE = 1.5;
+    private final double PAUSEBOX_X = App.WIDTH / 2 - 150;
+    private final double PAUSEBOX_Y = App.HEIGHT / 2 - 150;
+    private final double PAUSEBOX_SCALE = 1;
 
     private final static int GAME_TIME_MULTIPLIER = 60; // Frames per second
 
@@ -218,7 +218,10 @@ public class Logic {
     // ---------------- Pause function ----------------
 
     public static void displayPause() {
-        pauseBox.setVisible(true);
+        if(pauseBox.isVisible())
+            pauseBox.setVisible(false);
+        else 
+            pauseBox.setVisible(true);
     }
 
     public static void resumeGame() {

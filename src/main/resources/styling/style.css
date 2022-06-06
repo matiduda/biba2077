@@ -1,0 +1,30 @@
+.root {
+    -fx-background-image: url("../images/menu_background.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    
+    background-image: url("../images/menu_background.jpg");
+    background-size: cover;
+    background-position: center center;
+}
+
+.button {
+    -fx-padding: 20;
+    -fx-background-color: #ffffffd2;
+    -fx-effect: dropshadow( gaussian , rgba(0, 0, 0, 0.164) , 7,0,0,3 );
+    -fx-font-weight: bold;
+    -fx-font-size: 1.3em;
+    -fx-text-fill: rgb(63, 63, 63);
+
+    padding: 20;
+    background-color: #ffffffd2;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.button:hover {
+    -fx-background-color: rgb(5, 165, 32);
+    -fx-text-fill: rgb(251, 255, 198);
+
+    background-color: rgba(5, 165, 32, 0.747);
+}

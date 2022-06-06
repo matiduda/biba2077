@@ -2,49 +2,48 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fifa.SceneController">
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fifa.SceneController">
    <center>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#switchToGameOptions" prefWidth="100.0" text="Start game" />
-            <Button mnemonicParsing="false" onAction="#switchToHelp" prefWidth="100.0" text="How to play">
+            <Button mnemonicParsing="false" onAction="#switchToGameOptions" prefHeight="30.0" prefWidth="200.0" text="Szybka gra" />
+            <Button mnemonicParsing="false" onAction="#switchToHelp" prefHeight="30.0" prefWidth="200.0" text="Sterowanie">
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#handleCloseButtonAction" prefWidth="100.0" text="Exit" />
+            <Button mnemonicParsing="false" onAction="#handleCloseButtonAction" prefHeight="30.0" prefWidth="200.0" text="Wyjście" />
          </children>
+         <BorderPane.margin>
+            <Insets top="30.0" />
+         </BorderPane.margin>
       </VBox>
    </center>
    <top>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+      <ImageView fitWidth="400.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
          <image>
             <Image url="@../logo/biba_white_shadow_transparent.png" />
          </image>
          <BorderPane.margin>
-            <Insets top="30.0" />
+            <Insets top="60.0" />
          </BorderPane.margin>
       </ImageView>
    </top>
    <bottom>
-      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Credits" />
-            <Label text="Project on GitHub">
-               <VBox.margin>
-                  <Insets bottom="20.0" top="3.0" />
-               </VBox.margin>
-            </Label>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </VBox>
+      <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="v0.1 © dudaSports" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </BorderPane.margin>
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Text>
    </bottom>
 </BorderPane>

@@ -1,8 +1,6 @@
 package fifa;
 
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -10,25 +8,23 @@ public class Game {
     // Confirure how the game starts
     boolean SHOW_HITBOX = false;
 
-    public final static Color PLAYERS[] = { Color.BLUE, Color.RED, Color.YELLOW };
-    public final static String NAMES[] = { "Wojta", "Mati", "Janek" };
+    static Color[] colors;
 
-    public Game(Stage stage) {
+    public Game(Stage stage, String[] names, Color[] colors) {
+        Sound.menuStop();
+        Game.colors = colors;
 
         if (App.STARTS_FULLSCREEN) {
             App.WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
             App.HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
         }
 
-        new Sound();
-
         Group root = new Group();
-        
-        Scene scene = new Scene(root, App.WIDTH, App.HEIGHT, Color.TRANSPARENT);
+
         Elements elm = new Elements();
         new PlayField(elm);
 
-        final double PLAYER_DISTANCE_FROM_CENTER = 200;
+        final double PLAYER_DISTANCE_FROM_CENTER = App.HEIGHT / 3;
 
         Vector posDefault = new Vector(PlayField.ground.getCenterX(), PlayField.ground.getCenterY());
 
@@ -40,12 +36,12 @@ public class Game {
         pos2.add(posDefault);
         pos3.add(posDefault);
 
-        Player player1 = new Player(elm, scene, pos1, PLAYERS[0],
-                PlayField.ground, NAMES[0]);
-        Player player2 = new Player(elm, scene, pos2, PLAYERS[1],
-                PlayField.ground, NAMES[1]);
-        Player player3 = new Player(elm, scene, pos3, PLAYERS[2],
-                PlayField.ground, NAMES[2]);
+        Player player1 = new Player(elm, stage.getScene(), pos1, colors[0],
+                PlayField.ground, names[0]);
+        Player player2 = new Player(elm, stage.getScene(), pos2, colors[1],
+                PlayField.ground, names[1]);
+        Player player3 = new Player(elm, stage.getScene(), pos3, colors[2],
+                PlayField.ground, names[2]);
 
         new KeyboardInput();
 
@@ -69,7 +65,7 @@ public class Game {
 
         root.getChildren().addAll(elm.getElements());
 
-        stage.setScene(scene);
+        stage.getScene().setRoot(root);
         stage.show();
     }
 }

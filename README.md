@@ -12,6 +12,7 @@ The game is missing additional sound effects and music. You can download it <a h
 
 ## Special thanks
 
+- BroCode <a href="https://www.youtube.com/watch?v=_7OM-cMYWbQ&list=PLZPZq0r_RZOM-8vJA3NQFZB7JroDcMwev">JavaFX tutorials</a>
 - EA Logo <a href="https://befonts.com/ea-logo-font.html">font</a>
 - Voice Generator created by <a href="https://www.masswerk.at/mespeak/">Norbert Landsteiner</a>
 - Menu background created by <a href="https://freepik.com/pikisuperstar">pikisuperstar</a>

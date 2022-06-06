@@ -10,8 +10,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    public static boolean STARTS_FULLSCREEN = false;
-    public static boolean IS_RESIZABLE = false;
+    public static boolean STARTS_FULLSCREEN = true;
 
     public static double WIDTH = 1280;
     public static double HEIGHT = 720;
@@ -23,26 +22,34 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-
         Parent root = FXMLLoader.load(getClass().getResource("/menu/start.fxml"));
+        
+        new Sound();
+        Sound.menuPlay();
+
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styling/style.css").toExternalForm());
+        prepareGameWindow(stage, scene, "/icon/icon.png");
+        
         stage.setScene(scene);
         stage.show();
-
-        prepareGameWindow(stage, scene, "/icon/icon.png");
     }
 
     private void prepareGameWindow(Stage stage, Scene scene, String pathToIcon) {
-
         Image icon = new Image(getClass().getResource(pathToIcon).toString());
 
         stage.getIcons().add(icon);
         stage.setTitle("BIBA 2077");
+        
+        stage.setWidth(WIDTH);
+        stage.setHeight(HEIGHT);
 
-        stage.setResizable(IS_RESIZABLE);
         stage.setFullScreen(STARTS_FULLSCREEN);
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.setMinWidth(1280);
+        stage.setMinHeight(720);
 
-        stage.setFullScreenExitHint("Press 'q' to exit full screen mode");
         stage.setFullScreenExitKeyCombination(KeyCombination.valueOf("q"));
     }
 

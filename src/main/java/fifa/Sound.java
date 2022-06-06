@@ -8,10 +8,13 @@ import javafx.scene.media.AudioClip;
 
 public class Sound {
 
-    private static final double MUSIC_VOLUME = 0.15;
+    private static final double MUSIC_VOLUME = 0.20;
+
+    private static AudioClip menu = null;
 
     private static AudioClip kick = null;
 
+    private static boolean correctlyLoadedMenu = false;
     private static boolean correctlyLoadedKick = false;
     private static boolean correctlyLoadedComm = false;
     private static boolean correctlyLoadedTrck = false;
@@ -24,20 +27,33 @@ public class Sound {
     
     private final static int NUMBER_OF_TRACK_ENTRIES = 9;
     private static HashMap<Integer, AudioClip> tracks = new HashMap<Integer, AudioClip>();
-    private static int currentTrackInd = new Random().nextInt(NUMBER_OF_COM_ENTRIES);
+    private static int currentTrackInd = 5;
     private static AudioClip currentTrack = null;
 
     public Sound() {
+        loadMenuSound();
         loadKickSound();
         loadCommentary();
         loadTracks();
 
+        if(!correctlyLoadedMenu)
+            System.out.println("Could not locate the menu sound. Check README.md for download info!");
         if(!correctlyLoadedKick)
-            System.out.println("Could not locate the kick sound.");
+            System.out.println("Could not locate the kick sound. Check README.md for download info!");
         if(!correctlyLoadedComm)
             System.out.println("Could not load commentary. Check README.md for download info!");
         if(!correctlyLoadedTrck)
             System.out.println("Could not load game music. Check README.md for download info!");
+    }
+
+    public static void menuPlay() {
+        if(correctlyLoadedMenu)
+            menu.play(MUSIC_VOLUME);
+    }
+
+    public static void menuStop() {
+        if(correctlyLoadedMenu)
+            menu.stop();
     }
 
     public static void kick(double volume) {
@@ -57,18 +73,31 @@ public class Sound {
             return;
         if (currentTrack != null && currentTrack.isPlaying())
             return;
-
-        int newIndex = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);;
-        while(currentTrackInd == newIndex)
-            newIndex = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);
-
-        currentTrackInd = newIndex;
-        currentTrackInd = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);
+            
         currentTrack = tracks.get(currentTrackInd);
         currentTrack.play(MUSIC_VOLUME);
-    }
+        
+        int newIndex = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);
+        while(currentTrackInd == newIndex)
+            newIndex = new Random().nextInt(NUMBER_OF_TRACK_ENTRIES);
+        currentTrackInd = newIndex;
+        }
 
     // --------- Loading sounds ---------
+
+    private void loadMenuSound() {
+        URL res = getClass().getResource("/sound/menu/menu_music.wav");
+
+        if(res == null)
+            return;
+
+        String menuSource = res.toString();
+
+        if (menuSource != null) {            
+            menu = new AudioClip(menuSource);
+            correctlyLoadedMenu = true;
+        }
+    }
 
     private void loadKickSound() {
         URL res = getClass().getResource("/sound/kick.wav");
