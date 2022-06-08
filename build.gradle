@@ -22,7 +22,7 @@ buildscript {
  */
 apply plugin: 'java'
 apply plugin: 'application'
-apply plugin: 'com.google.osdetector'
+apply plugin: 'osdetector'
 
 compileJava {
   sourceCompatibility = 11
