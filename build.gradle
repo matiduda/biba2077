@@ -1,0 +1,98 @@
+
+/**
+ ******************  Script Configuration ******************
+ */
+buildscript {
+  repositories {
+    jcenter()
+
+    maven {
+      url "https://sandec.bintray.com/repo"
+    }
+  }
+
+  dependencies {
+    classpath 'com.sandec.jpro:jpro-plugin-gradle:2019.2.1'
+  }
+}
+
+
+/**
+ ******************  Java Configuration ******************
+ */
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.google.osdetector'
+
+compileJava {
+  sourceCompatibility = 11
+  targetCompatibility = 11
+}
+
+repositories {
+  jcenter()
+}
+
+ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+
+dependencies {
+    // Add your dependencies here, for example:
+    // compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.14'
+    compile "org.openjfx:javafx-base:11:$platform"
+    compile "org.openjfx:javafx-graphics:11:$platform"
+    compile "org.openjfx:javafx-controls:11:$platform"
+    compile "org.openjfx:javafx-fxml:11:$platform"
+    compile "org.openjfx:javafx-media:11:$platform"
+    compile "org.openjfx:javafx-web:11:$platform"
+}
+
+
+compileJava {
+  doFirst {
+    options.compilerArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.fxml,javafx.controls'
+    ]
+  }
+}
+
+
+run {
+  doFirst {
+    jvmArgs = [
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.fxml,javafx.controls'
+    ]
+  }
+}
+
+
+/**
+ ******************  jpro Configuration ******************
+ */
+apply plugin: 'com.sandec.jpro'
+
+
+/**
+ * App Main Class
+ */
+//mainClassName = 'com.jpro.hellojpro.HelloJPro'
+mainClassName = 'com.jpro.hellojpro.HelloJProFXML'
+
+/**
+ * jpro settings
+ */
+jpro {
+  // for debugging
+  // JVMArgs << '-agentlib:jdwp=transport=dt_socket,server=n,address=5006,suspend=y'
+
+  JVMArgs << '-Xmx300m'
+
+  //jpro server port
+  port = 80
+
+}
+
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean

@@ -36,3 +36,6 @@ replay_pid*
 src/main/resources/sound/com/*
 src/main/resources/sound/music/*
 src/main/resources/sound/menu/*
+
+# Heroku deployment
+.biba/
