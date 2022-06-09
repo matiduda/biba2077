@@ -29,11 +29,11 @@ public class Hitboxes {
     private final double scoreOffset = 5;
 
     // Special hitbox for checking score collisions
-    private static Rectangle collisionHitbox;
+    private Rectangle collisionHitbox;
 
-    public Hitboxes() {
-        ObservableList<Double> ptsR = PlayField.goalR.getPoints();
-        ObservableList<Double> ptsPolygon = PlayField.field.getPoints();
+    public Hitboxes(PlayField field) {
+        ObservableList<Double> ptsR = field.goalR.getPoints();
+        ObservableList<Double> ptsPolygon = field.field.getPoints();
 
         Rectangle leftR = new Rectangle(ptsR.get(6) + R_offset_x, ptsR.get(7) + R_offset_y, slupekGrubosc,
                 slupekHeight);
@@ -79,7 +79,7 @@ public class Hitboxes {
         elements.add(border);
     }
 
-    public static Rectangle getGoalHitbox() {
+    public Rectangle getGoalHitbox() {
         return collisionHitbox;
     }
 }

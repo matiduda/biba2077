@@ -6,15 +6,14 @@ import javafx.scene.shape.Circle;
 
 public class Ball {
 
-    private static final double KICK_VOLUME = 0.7;
     // Object behaviour attributes
-    int maxSpeed = 3;
-    double airResistance = 0.02;
-    double acceleration = 0.2;
-    double mass = 10;
+    public int maxSpeed = 3;
+    public double airResistance = 0.02;
+    public double acceleration = 0.2;
+    public double mass = 10;
     //
 
-    protected static Vector center;
+    protected Vector center;
     protected double maxDistance;
 
     public boolean IS_BALL;
@@ -55,7 +54,7 @@ public class Ball {
         setEventsAndTimers();
     }
 
-    public void update() {
+    public void draw() {
         ball.setCenterX(pos.x);
         ball.setCenterY(pos.y);
     }
@@ -68,8 +67,8 @@ public class Ball {
         Vector newPosX = new Vector(pos.x + dx, pos.y);
         Vector newPosY = new Vector(pos.x, pos.y + dy);
 
-        double distX = Math.abs(CollisionDetection.getDistance(center, newPosX));
-        double distY = Math.abs(CollisionDetection.getDistance(center, newPosY));
+        double distX = Math.abs(Utils.getDistance(center, newPosX));
+        double distY = Math.abs(Utils.getDistance(center, newPosY));
 
         double effect = 0.7;
 
@@ -86,8 +85,7 @@ public class Ball {
 
     public void shoot(Vector from, double strength) {
 
-        // Play shooting sound
-        Sound.kick(KICK_VOLUME);
+        shooting = true;
 
         // Create a new normalized vector from 'from' to ball 'pos'
         double Xcomponent = from.x - pos.x;
@@ -103,7 +101,7 @@ public class Ball {
     }
 
     public boolean isShooting() {
-        return false;
+        return shooting;
     }
 
     public void resetPos() {
@@ -132,7 +130,7 @@ public class Ball {
                     vel.y += airResistance;
 
                 move(vel.x, vel.y);
-                update();
+                draw();
             }
         };
         timer.start();

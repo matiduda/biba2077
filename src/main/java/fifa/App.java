@@ -24,9 +24,6 @@ public class App extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/menu/start.fxml"));
         
-        new Sound();
-        Sound.menuPlay();
-
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/styling/style.css").toExternalForm());
         prepareGameWindow(stage, scene, "/icon/icon.png");

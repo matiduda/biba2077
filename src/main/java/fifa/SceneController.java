@@ -18,6 +18,8 @@ public class SceneController {
     
     private String css = this.getClass().getResource("/styling/style.css").toExternalForm();
 
+    private Game game;
+
     public void startGame(ActionEvent event) throws IOException {
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -40,7 +42,7 @@ public class SceneController {
         colors[1] = color2.getValue();
         colors[2] = color3.getValue();
 
-        new Game(stage, names, colors);
+        game = new Game(stage, names, colors);
     }
 
     public void switchToGameOptions(ActionEvent event) throws IOException {
@@ -68,10 +70,10 @@ public class SceneController {
     }
 
     public void resumeGame(ActionEvent event) {
-        Logic.resumeGame();
+        game.resumeGame();
     }
 
     public void resetGame(ActionEvent event) {
-        Logic.pauseResetGame();
+        game.pauseResetGame();
     }
 }

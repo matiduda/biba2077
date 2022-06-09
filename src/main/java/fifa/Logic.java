@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 
 public class Logic {
 
-    private static long timer;
+    private long timer;
 
     private final double PANEL_X = -80;
     private final double PANEL_Y = -30;
@@ -27,22 +27,22 @@ public class Logic {
     private final double PAUSEBOX_Y = App.HEIGHT / 2 - 150;
     private final double PAUSEBOX_SCALE = 1;
 
-    private final static int GAME_TIME_MULTIPLIER = 60; // Frames per second
+    private final int GAME_TIME_MULTIPLIER = 60; // Frames per second
 
-    private final static int AFTER_GOAL_DELAY_IN_SEC = 5;
-    private final static int START_ROUND_FREEZE_TIME_IN_SEC = 5;
+    private final int AFTER_GOAL_DELAY_IN_SEC = 5;
+    private final int START_ROUND_FREEZE_TIME_IN_SEC = 5;
 
     // -------- Elements --------
 
-    private static Player p1;
-    private static Player p3;
-    private static Player p2;
+    private Player p1;
+    private Player p3;
+    private Player p2;
 
-    private static Ball b;
+    private Ball b;
 
     private Text gameTime;
-    private static int minutes;
-    private static int seconds;
+    private int minutes;
+    private int seconds;
 
     private Rectangle colorPlayer1;
     private Rectangle colorPlayer2;
@@ -52,9 +52,9 @@ public class Logic {
     private Label idPlayer2;
     private Label idPlayer3;
 
-    private static Text scorePlayer1;
-    private static Text scorePlayer2;
-    private static Text scorePlayer3;
+    private Text scorePlayer1;
+    private Text scorePlayer2;
+    private Text scorePlayer3;
 
     private AnimationTimer animation;
 
@@ -62,30 +62,31 @@ public class Logic {
 
     // ----- Text box -----
 
-    private static Text info;
-    private static Text timeToStart;
+    private Text info;
+    private Text timeToStart;
 
-    private static Rectangle textBoxTimeBack;
+    private Rectangle textBoxTimeBack;
 
-    private static GridPane textBox;
+    private GridPane textBox;
 
     // ----- Pause box -----
 
-    private static GridPane pauseBox;
+    private GridPane pauseBox;
 
     // ----- Game stats -----
 
-    private static int currentRound;
-    private static int nextRoundDelay;
-    private static int startFreeze;
-    private static boolean wait;
-    private static boolean roundBegun;
-
+    private int currentRound;
+    private int nextRoundDelay;
+    private int startFreeze;
+    private boolean wait;
+    private boolean roundBegun;
 
     // ----- Round win info -----
 
-    private static String loserName;
-    private static final String winInfos[] = {"będzie kopany...", "coś nie wyszło...", ", pozdro poćwicz", "wstał lewą nogą", "to nie jego dzień", "zaraz się odegra", "zobaczył samolot", "nie wypił kawy", "xD", "xDDDD", "to lama (żartuję)", "będzie kopany mocno", "złapał laga", " - ALE ZAWIAŁO ŁE", "to lama (serio)", "jest dominowany", ":))"};
+    private String loserName;
+    private final String winInfos[] = {"będzie kopany...", "coś nie wyszło...", ", pozdro poćwicz", "wstał lewą nogą", "to nie jego dzień", "zaraz się odegra", "zobaczył samolot", "nie wypił kawy", "xD", "xDDDD", "to lama (żartuję)", "będzie kopany mocno", "złapał laga", " - ALE ZAWIAŁO ŁE", "to lama (serio)", "jest dominowany", ":))"};
+
+    public boolean playCommentary = false;
 
     public Logic(double roundTime, Elements list, Player p1, Player p2, Player p3, Ball b) {
         loadGameBar();
@@ -93,10 +94,10 @@ public class Logic {
         loadPauseBox();
         loadElements();
 
-        Logic.p1 = p1;
-        Logic.p2 = p2;
-        Logic.p3 = p3;
-        Logic.b = b;
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
+        this.b = b;
 
         setColorsAndNames();
         resetScores();
@@ -109,7 +110,7 @@ public class Logic {
         resetGame();
     }
 
-    private static void resetGame() {
+    private void resetGame() {
         timer = 0;
         seconds = 0;
         minutes = 0;
@@ -120,13 +121,13 @@ public class Logic {
         resetScores();
     }
 
-    public static void goalDetected(int angle) {
+    public void goalDetected(int angle) {
 
         // Check if the round is already over
         if (nextRoundDelay > 0)
             return;
 
-        Sound.commentary();
+        playCommentary = true;
 
         nextRoundDelay = GAME_TIME_MULTIPLIER * AFTER_GOAL_DELAY_IN_SEC;
 
@@ -147,7 +148,7 @@ public class Logic {
         wait = true;
     }
 
-    private static void lockPlayers() {
+    private void lockPlayers() {
         p1.lockMovement = true;
         p2.lockMovement = true;
         p3.lockMovement = true;
@@ -159,7 +160,7 @@ public class Logic {
         p3.lockMovement = false;
     }
 
-    private static void resetScores() {
+    private void resetScores() {
         p1.score = 0;
         p2.score = 0;
         p3.score = 0;
@@ -174,7 +175,7 @@ public class Logic {
         scorePlayer3.setFill(Color.WHITE);
     }
 
-    private static void updateScores(int player) {
+    private void updateScores(int player) {
         switch (player) {
             case 0:
                 p1.score++;
@@ -217,18 +218,18 @@ public class Logic {
 
     // ---------------- Pause function ----------------
 
-    public static void displayPause() {
+    public void displayPause() {
         if(pauseBox.isVisible())
             pauseBox.setVisible(false);
         else 
             pauseBox.setVisible(true);
     }
 
-    public static void resumeGame() {
+    public void resumeGame() {
         pauseBox.setVisible(false);
     }
 
-    public static void pauseResetGame() {
+    public void pauseResetGame() {
         pauseBox.setVisible(false);
         resetGame();
     }   

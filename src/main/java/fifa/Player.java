@@ -1,10 +1,5 @@
 package fifa;
 
-import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -23,7 +18,7 @@ public class Player extends Ball {
     public double size = 27;
     public int score = 0;
 
-    public Player(Elements list, Scene scene, Vector startPos, Paint color, Circle field, String name) {
+    public Player(Elements list, Vector startPos, Paint color, Circle field, String name) {
         IS_BALL = false;
 
         this.name = name;
@@ -39,77 +34,48 @@ public class Player extends Ball {
         list.add(ball);
 
         setCenter(field);
-
-        KeyboardInput.add(this);
-
-        setEventsAndTimers(scene);
     }
 
     // --------- Single use methods ---------
 
-    protected void setEventsAndTimers(Scene scene) {
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                // Set boolean values for the players
-                KeyCode code = event.getCode();
-                KeyboardInput.setInputOnKeyPressed(code);
-            }
-        });
+    public void update() {
+        
+        if (Math.abs(vel.y) < maxSpeed) {
 
-        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                KeyCode code = event.getCode();
-                KeyboardInput.setInputOnKeyReleased(code);
-            }
-        });
+            if (goNorth)
+                vel.y -= acceleration;
+            if (goSouth)
+                vel.y += acceleration;
+        }
+        if (Math.abs(vel.x) < maxSpeed) {
 
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
+            if (goEast)
+                vel.x += acceleration;
+            if (goWest)
+                vel.x -= acceleration;
+        }
 
-                if (Math.abs(vel.y) < maxSpeed) {
+        if (none) {
+            if (vel.x > 0)
+                vel.x -= airResistance;
+            if (vel.x < 0)
+                vel.x += airResistance;
+            if (vel.y > 0)
+                vel.y -= airResistance;
+            if (vel.y < 0)
+                vel.y += airResistance;
+        }
 
-                    if (goNorth)
-                        vel.y -= acceleration;
-                    if (goSouth)
-                        vel.y += acceleration;
-                }
-                if (Math.abs(vel.x) < maxSpeed) {
+        if (makeShootable) {
+            ball.setStroke(Color.DARKORANGE);
+        } else if (!shooting) {
+            ball.setStroke(Color.BLACK);
+        } else {
+            ball.setStroke(Color.WHITE);
+        }
 
-                    if (goEast)
-                        vel.x += acceleration;
-                    if (goWest)
-                        vel.x -= acceleration;
-                }
-
-                if (none) {
-                    if (vel.x > 0)
-                        vel.x -= airResistance;
-                    if (vel.x < 0)
-                        vel.x += airResistance;
-                    if (vel.y > 0)
-                        vel.y -= airResistance;
-                    if (vel.y < 0)
-                        vel.y += airResistance;
-                }
-
-                if (makeShootable) {
-                    ball.setStroke(Color.DARKORANGE);
-                } else if (!shooting) {
-                    ball.setStroke(Color.BLACK);
-                } else {
-                    ball.setStroke(Color.WHITE);
-                }
-
-                move(vel.x, vel.y);
-                update();
-            }
-        };
-
-        timer.start();
-        return;
+        move(vel.x, vel.y);
+        draw();
     }
 
     public boolean isShooting() {

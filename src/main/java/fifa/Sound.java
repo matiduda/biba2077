@@ -8,27 +8,29 @@ import javafx.scene.media.AudioClip;
 
 public class Sound {
 
-    private static final double MUSIC_VOLUME = 0.20;
+    private final double KICK_VOLUME = 0.7;
 
-    private static AudioClip menu = null;
+    private final double MUSIC_VOLUME = 0.20;
 
-    private static AudioClip kick = null;
+    private AudioClip menu = null;
 
-    private static boolean correctlyLoadedMenu = false;
-    private static boolean correctlyLoadedKick = false;
-    private static boolean correctlyLoadedComm = false;
-    private static boolean correctlyLoadedTrck = false;
+    private AudioClip kick = null;
+
+    private boolean correctlyLoadedMenu = false;
+    private boolean correctlyLoadedKick = false;
+    private boolean correctlyLoadedComm = false;
+    private boolean correctlyLoadedTrck = false;
     
     // The music and commentary are optional
     // and will be downloaded by a shell script
 
-    private final static int NUMBER_OF_COM_ENTRIES = 37;
-    private static HashMap<Integer, AudioClip> commentary = new HashMap<Integer, AudioClip>();
+    private final int NUMBER_OF_COM_ENTRIES = 37;
+    private HashMap<Integer, AudioClip> commentary = new HashMap<Integer, AudioClip>();
     
-    private final static int NUMBER_OF_TRACK_ENTRIES = 9;
-    private static HashMap<Integer, AudioClip> tracks = new HashMap<Integer, AudioClip>();
-    private static int currentTrackInd = 5;
-    private static AudioClip currentTrack = null;
+    private final int NUMBER_OF_TRACK_ENTRIES = 9;
+    private HashMap<Integer, AudioClip> tracks = new HashMap<Integer, AudioClip>();
+    private int currentTrackInd = 5;
+    private AudioClip currentTrack = null;
 
     public Sound() {
         loadMenuSound();
@@ -46,29 +48,29 @@ public class Sound {
             System.out.println("Could not load game music. Check README.md for download info!");
     }
 
-    public static void menuPlay() {
+    public void menuPlay() {
         if(correctlyLoadedMenu)
             menu.play(MUSIC_VOLUME);
     }
 
-    public static void menuStop() {
+    public void menuStop() {
         if(correctlyLoadedMenu)
             menu.stop();
     }
 
-    public static void kick(double volume) {
+    public void kick() {
         if (!kick.isPlaying() && correctlyLoadedKick)
-            kick.play(volume, 0.5, 1, 0.5, 0);
+            kick.play(KICK_VOLUME, 0.5, 1, 0.5, 0);
     }
 
-    public static void commentary() {
+    public void commentary() {
         if (correctlyLoadedComm) {
             int r = new Random().nextInt(NUMBER_OF_COM_ENTRIES);
             commentary.get(r).play(0.5);
         }
     }
 
-    public static void music() {
+    public void music() {
         if(!correctlyLoadedTrck)
             return;
         if (currentTrack != null && currentTrack.isPlaying())
@@ -86,7 +88,7 @@ public class Sound {
     // --------- Loading sounds ---------
 
     private void loadMenuSound() {
-        URL res = getClass().getResource("/sound/menu/menu_music.wav");
+        URL res = getClass().getResource("/sound/menu/menu_music.mp3");
 
         if(res == null)
             return;

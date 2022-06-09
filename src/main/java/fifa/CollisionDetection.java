@@ -9,9 +9,7 @@ import javafx.scene.shape.Rectangle;
 
 public class CollisionDetection {
 
-    private final static int collisionBoundary = 5;
-
-    protected static final double KICK_VOLUME = 0.0;
+    private final int collisionBoundary = 5;
 
     HashMap<Integer, Ball> dynamicObj = new HashMap<Integer, Ball>();
     HashMap<Integer, Rectangle> staticObj = new HashMap<Integer, Rectangle>();
@@ -29,10 +27,18 @@ public class CollisionDetection {
     private final double goalGateAngles[] = { 0, -2 * Math.PI / 3, 2 * Math.PI / 3 };
     private final double borderAngles[] = { Math.PI / 3, Math.PI, 5 * Math.PI / 3 };
 
+    public boolean playKickSound = false;
+
+    private Logic gameLogic;
+
+    Hitboxes hitboxes;
+
     AnimationTimer collisionTimer;
 
-    public CollisionDetection(Rectangle border) {
+    public CollisionDetection(Rectangle border, Logic gameLogic, Hitboxes hitboxes) {
         bottomFieldBorder = border;
+        this.gameLogic = gameLogic;
+        this.hitboxes = hitboxes;
 
         setCollisionChecks();
         collisionTimer.start();
@@ -46,13 +52,6 @@ public class CollisionDetection {
         for (Node w : walls) {
             staticObj.put(staticSize++, (Rectangle) w);
         }
-    }
-
-    static double getDistance(Vector pos1, Vector pos2) {
-        double xDistance = pos2.x - pos1.x;
-        double yDistance = pos2.y - pos1.y;
-
-        return Math.sqrt(xDistance * xDistance + yDistance * yDistance);
     }
 
     // --------------- Ball - Rectangle collisions ---------------
@@ -78,7 +77,7 @@ public class CollisionDetection {
     }
 
     private void resolveStaticCollision(Ball b, double angle) {
-        Vector newVelocity = rotate(b.vel, (Math.PI / 4) - 2 * angle);
+        Vector newVelocity = Utils.rotate(b.vel, (Math.PI / 4) - 2 * angle);
 
         newVelocity.x *= bounceEffectBall;
         newVelocity.y *= bounceEffectBall;
@@ -105,8 +104,8 @@ public class CollisionDetection {
 
     // --------------- Ball - Ball collisions ---------------
 
-    public static boolean checkBallCollision(Ball b1, Ball b2) {
-        double distance = getDistance(b1.pos, b2.pos);
+    public boolean checkBallCollision(Ball b1, Ball b2) {
+        double distance = Utils.getDistance(b1.pos, b2.pos);
 
         if (distance <= (b1.size + b2.size + collisionBoundary))
             return true;
@@ -116,16 +115,6 @@ public class CollisionDetection {
 
     // Code resource from
     // https://gist.github.com/christopher4lis/f9ccb589ee8ecf751481f05a8e59b1dc
-
-    static Vector rotate(Vector vel, double angle) {
-
-        Vector rotatedVelocities = new Vector(0, 0);
-
-        rotatedVelocities.x = vel.x * Math.cos(angle) - vel.y * Math.sin(angle);
-        rotatedVelocities.y = vel.x * Math.sin(angle) + vel.y * Math.cos(angle);
-
-        return rotatedVelocities;
-    }
 
     private void resolveBallCollision(Ball particle, Ball otherParticle) {
         double xVelocityDiff = particle.vel.x - otherParticle.vel.x;
@@ -144,8 +133,8 @@ public class CollisionDetection {
             double m2 = otherParticle.mass;
 
             // Velocity before equation
-            Vector u1 = rotate(particle.vel, angle);
-            Vector u2 = rotate(otherParticle.vel, angle);
+            Vector u1 = Utils.rotate(particle.vel, angle);
+            Vector u2 = Utils.rotate(otherParticle.vel, angle);
 
             // Velocity after 1d collision equation
             Vector v1 = new Vector(0, 0);
@@ -158,8 +147,8 @@ public class CollisionDetection {
             v2.y = u2.y;
 
             // Final velocity after rotating axis back to original location
-            Vector vFinal1 = rotate(v1, -angle);
-            Vector vFinal2 = rotate(v2, -angle);
+            Vector vFinal1 = Utils.rotate(v1, -angle);
+            Vector vFinal2 = Utils.rotate(v2, -angle);
 
             // Swap particle velocities for realistic bounce effect
             particle.vel.x = vFinal1.x;
@@ -177,7 +166,6 @@ public class CollisionDetection {
             @Override
             public void handle(long now) {
                 // Resolve collisions between dynamic objects
-                boolean playSound = false;
 
                 for (int i = 0; i < dynamicSize; i++) {
                     for (int j = i + 1; j < dynamicSize; j++) {
@@ -186,13 +174,13 @@ public class CollisionDetection {
 
                         if (checkBallCollision(b1, b2) == true) {
                             resolveBallCollision(b1, b2);
-                            playSound = true;
+                            playKickSound = true;
                         }
 
                         // Check if player can shoot the ball
                         if (b1.IS_BALL && !b2.IS_BALL) {
 
-                            double d = getDistance(b1.pos, b2.pos);
+                            double d = Utils.getDistance(b1.pos, b2.pos);
 
                             if (d < (b1.size + b2.size + 2 * ballShootableOffset)) {
                                 b2.makeShootable(true);
@@ -242,8 +230,8 @@ public class CollisionDetection {
                                 if (checkStaticCollision(b, wall, goalGateAngles[s])) {
 
                                     // Check for a score
-                                    if (wall.getWidth() == Hitboxes.getGoalHitbox().getWidth()) {
-                                        Logic.goalDetected(s);
+                                    if (wall.getWidth() == hitboxes.getGoalHitbox().getWidth()) {
+                                        gameLogic.goalDetected(s);
                                     }
 
                                     resolveSimpleStaticCollision(b);
@@ -252,15 +240,6 @@ public class CollisionDetection {
                         }
                     }
                 }
-
-                // Play the kick sound
-
-                if (playSound) {
-                    Sound.kick(KICK_VOLUME);
-                }
-
-                // Play music
-                Sound.music();
             }
         };
     }

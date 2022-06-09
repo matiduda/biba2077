@@ -1,91 +1,88 @@
 package fifa;
 
-import java.util.ArrayList;
-
 import javafx.scene.input.KeyCode;
 
 public class KeyboardInput {
 
-    private static ArrayList<Player> players = new ArrayList<Player>();
+    private Player[] players = new Player[3];
 
-    private static KeyCode[][] keys = new KeyCode[3][5];
+    private KeyCode[][] keys = new KeyCode[3][5];
 
-    public KeyboardInput() {
-        for (int i = 0; i < players.size(); i++)
+    private Logic logic;
+
+    public KeyboardInput(Logic logic, Player[] players) {
+        this.logic = logic;
+        this.players = players;
+        for (int i = 0; i < 3; i++)
             fillKeycodeArray(i);
     }
 
-    public static void setInputOnKeyPressed(KeyCode code) {
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
+    public void setInputOnKeyPressed(KeyCode code) {
+        for (int i = 0; i < 3; i++) {
 
-            player.none = true;
+            players[i].none = true;
 
             if (code == keys[i][0]) { // UP
-                player.goNorth = true;
-                player.none = false;
+                players[i].goNorth = true;
+                players[i].none = false;
             }
 
             if (code == keys[i][1]) { // DOWN
-                player.goSouth = true;
-                player.none = false;
+                players[i].goSouth = true;
+                players[i].none = false;
             }
 
             if (code == keys[i][2]) { // LEFT
-                player.goWest = true;
-                player.none = false;
+                players[i].goWest = true;
+                players[i].none = false;
             }
 
             if (code == keys[i][3]) { // RIGHT
-                player.goEast = true;
-                player.none = false;
+                players[i].goEast = true;
+                players[i].none = false;
             }
 
             if (code == keys[i][4]) { // SHOOT
-                player.shooting = true;
-                player.none = false;
+                players[i].shooting = true;
+                players[i].none = false;
             }
 
             if(code == KeyCode.P)
-                Logic.displayPause();
+                logic.displayPause();
         }
     }
 
-    public static void setInputOnKeyReleased(KeyCode code) {
-        for (int i = 0; i < players.size(); i++) {
-            Player player = players.get(i);
+    public void setInputOnKeyReleased(KeyCode code) {
+        for (int i = 0; i < 3; i++) {
 
-            player.none = true;
+
+            players[i].none = true;
 
             if (code == keys[i][0]) { // UP
-                player.goNorth = false;
-                player.none = true;
+                players[i].goNorth = false;
+                players[i].none = true;
             }
 
             if (code == keys[i][1]) { // DOWN
-                player.goSouth = false;
-                player.none = true;
+                players[i].goSouth = false;
+                players[i].none = true;
             }
 
             if (code == keys[i][2]) { // LEFT
-                player.goWest = false;
-                player.none = true;
+                players[i].goWest = false;
+                players[i].none = true;
             }
 
             if (code == keys[i][3]) { // RIGHT
-                player.goEast = false;
-                player.none = true;
+                players[i].goEast = false;
+                players[i].none = true;
             }
 
             if (code == keys[i][4]) { // SHOOT
-                player.shooting = false;
-                player.none = true;
+                players[i].shooting = false;
+                players[i].none = true;
             }
         }
-    }
-
-    public static void add(Player p) {
-        players.add(p);
     }
 
     private void fillKeycodeArray(int i) {

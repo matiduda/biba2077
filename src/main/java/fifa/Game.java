@@ -1,19 +1,31 @@
 package fifa;
 
+import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Game {
-    // Confirure how the game starts
-    boolean SHOW_HITBOX = false;
 
-    static Color[] colors;
+    boolean SHOW_HITBOX = false;
+    private Scene scene;
+
+    private Player[] players = new Player[3];
+    private Vector[] startingPositions = new Vector[3];
+
+    private Sound soundSystem;
+    private CollisionDetection CDsystem;
+    private Ball ball;
+    private KeyboardInput kbInput;
+    private Logic gameLogic;
 
     public Game(Stage stage, String[] names, Color[] colors) {
-        Sound.menuStop();
-        Game.colors = colors;
 
+        soundSystem = new Sound();
         if (App.STARTS_FULLSCREEN) {
             App.WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
             App.HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
@@ -22,50 +34,105 @@ public class Game {
         Group root = new Group();
 
         Elements elm = new Elements();
-        new PlayField(elm);
+        PlayField field = new PlayField(elm, colors);
 
         final double PLAYER_DISTANCE_FROM_CENTER = App.HEIGHT / 3;
 
-        Vector posDefault = new Vector(PlayField.ground.getCenterX(), PlayField.ground.getCenterY());
+        Vector posDefault = new Vector(field.ground.getCenterX(), field.ground.getCenterY());
 
-        Vector pos1 = new Vector(0, PLAYER_DISTANCE_FROM_CENTER);
-        Vector pos2 = CollisionDetection.rotate(pos1, 2 * Math.PI / 3);
-        Vector pos3 = CollisionDetection.rotate(pos1, -2 * Math.PI / 3);
+        startingPositions[0] = new Vector(0, PLAYER_DISTANCE_FROM_CENTER);
+        startingPositions[1] = Utils.rotate(startingPositions[0], 2 * Math.PI / 3);
+        startingPositions[2] = Utils.rotate(startingPositions[0], -2 * Math.PI / 3);
 
-        pos1.add(posDefault);
-        pos2.add(posDefault);
-        pos3.add(posDefault);
+        startingPositions[0].add(posDefault);
+        startingPositions[1].add(posDefault);
+        startingPositions[2].add(posDefault);
 
-        Player player1 = new Player(elm, stage.getScene(), pos1, colors[0],
-                PlayField.ground, names[0]);
-        Player player2 = new Player(elm, stage.getScene(), pos2, colors[1],
-                PlayField.ground, names[1]);
-        Player player3 = new Player(elm, stage.getScene(), pos3, colors[2],
-                PlayField.ground, names[2]);
+        for(int i = 0; i < 3; i++)
+            players[i] = new Player(elm, startingPositions[i], colors[i],
+            field.ground, names[i]);
 
-        new KeyboardInput();
 
-        Ball ball = new Ball(elm, posDefault, PlayField.ground);
+        ball = new Ball(elm, posDefault, field.ground);
 
-        Hitboxes hitboxes = new Hitboxes();
+        Hitboxes hitboxes = new Hitboxes(field);
 
         if (SHOW_HITBOX)
             hitboxes.showHitboxes(elm.getElements());
 
-        CollisionDetection system = new CollisionDetection(hitboxes.border);
+        gameLogic = new Logic(10, elm, players[0], players[1], players[2], ball);
+        kbInput = new KeyboardInput(gameLogic, players);
 
-        system.addStatic(hitboxes.getElementsCollection());
+        CDsystem = new CollisionDetection(hitboxes.border, gameLogic, hitboxes);
 
-        system.addDynamic(ball);
-        system.addDynamic(player1);
-        system.addDynamic(player2);
-        system.addDynamic(player3);
+        CDsystem.addStatic(hitboxes.getElementsCollection());
 
-        new Logic(10, elm, player1, player2, player3, ball);
+        CDsystem.addDynamic(ball);
+        CDsystem.addDynamic(players[0]);
+        CDsystem.addDynamic(players[1]);
+        CDsystem.addDynamic(players[2]);
+
 
         root.getChildren().addAll(elm.getElements());
 
+        this.scene = stage.getScene();
         stage.getScene().setRoot(root);
         stage.show();
+
+        setGameLoop();
+    }
+
+    private void setGameLoop() {
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Set boolean values for the players
+                KeyCode code = event.getCode();
+                kbInput.setInputOnKeyPressed(code);
+            }
+        });
+
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                KeyCode code = event.getCode();
+                kbInput.setInputOnKeyReleased(code);
+            }
+        });
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                
+                for(Player p: players) {
+                    p.update();
+                }
+
+                if(ball.shooting) {
+                    soundSystem.kick();
+                    ball.shooting = false;
+                }
+                
+                // Play music
+                soundSystem.music();
+
+                // Play commentary
+                if(gameLogic.playCommentary) {
+                    soundSystem.commentary();
+                    gameLogic.playCommentary = false;
+                }
+            }
+        };
+
+        timer.start();
+        return;
+    }
+
+    public void pauseResetGame() {
+
+    }
+
+    public void resumeGame() {
+
     }
 }

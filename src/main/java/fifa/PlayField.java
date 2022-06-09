@@ -14,29 +14,29 @@ import javafx.scene.paint.Color;
 
 public class PlayField {
 
-        private static final double H5 = HEIGHT / 5;
-        private static final double H2 = HEIGHT / 2;
-        private static final double SQ2 = (H2 * sqrt(3)) / 2;
-        private static final double W2 = WIDTH / 2;
-        private static final double H4 = HEIGHT / 4;
+        private final double H5 = HEIGHT / 5;
+        private final double H2 = HEIGHT / 2;
+        private final double SQ2 = (H2 * sqrt(3)) / 2;
+        private final double W2 = WIDTH / 2;
+        private final double H4 = HEIGHT / 4;
 
         private enum GoalType {
                 BLUE, YELLOW, RED
         };
 
-        public static Polyline goalB;
-        public static Polyline goalY;
-        public static Polyline goalR;
+        public Polyline goalB;
+        public Polyline goalY;
+        public Polyline goalR;
 
-        public static Circle ground;
-        public static Polyline goal;
-        public static Polygon field;
+        public Circle ground;
+        public Polyline goal;
+        public Polygon field;
 
-        public PlayField(Elements list) {
+        public PlayField(Elements list, Color[] colors) {
 
-                goalB = createGoal(GoalType.BLUE);
-                goalY = createGoal(GoalType.YELLOW);
-                goalR = createGoal(GoalType.RED);
+                goalB = createGoal(GoalType.BLUE, colors);
+                goalY = createGoal(GoalType.YELLOW, colors);
+                goalR = createGoal(GoalType.RED, colors);
 
                 ground = new Circle(W2, H2, H2, Color.GRAY);
 
@@ -114,9 +114,7 @@ public class PlayField {
                 list.add(goalR);
         }
 
-        private Polyline createGoal(GoalType type) {
-
-                // Jasna dupa ten kod się nadaje do mema xD
+        private Polyline createGoal(GoalType type, Color[] colors) {
 
                 goal = new Polyline();
                 switch (type) {
@@ -148,7 +146,7 @@ public class PlayField {
                                                                 midpointY(H2, H2
                                                                                 - SQ2))
                                                                 + HEIGHT / 40);
-                                goal.setFill(Game.colors[1]);
+                                goal.setFill(colors[1]);
                                 goal.setStrokeWidth(5);
                                 break;
                         case YELLOW:
@@ -179,7 +177,7 @@ public class PlayField {
                                                                 midpointY(H2, H2
                                                                                 - SQ2))
                                                                 + HEIGHT / 40);
-                                goal.setFill(Game.colors[2]);
+                                goal.setFill(colors[2]);
                                 goal.setStrokeWidth(5);
                                 break;
                         case RED:
@@ -200,7 +198,7 @@ public class PlayField {
                                                                 midpointX(W2 + H4,
                                                                                 W2 - H4)),
                                                 H2 + (H2 * sqrt(3) / 2) - HEIGHT / 20);
-                                goal.setFill(Game.colors[0]);
+                                goal.setFill(colors[0]);
                                 goal.setStrokeWidth(5);
                                 break;
                 }
