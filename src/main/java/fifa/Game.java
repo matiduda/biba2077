@@ -17,19 +17,12 @@ public class Game {
     private Player[] players = new Player[3];
     private Vector[] startingPositions = new Vector[3];
 
-    private Sound soundSystem;
     private CollisionDetection CDsystem;
     private Ball ball;
     private KeyboardInput kbInput;
     private Logic gameLogic;
 
     public Game(Stage stage, String[] names, Color[] colors) {
-
-        soundSystem = new Sound();
-        if (App.STARTS_FULLSCREEN) {
-            App.WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
-            App.HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
-        }
 
         Group root = new Group();
 
@@ -108,19 +101,9 @@ public class Game {
                     p.update();
                 }
 
-                if(ball.shooting) {
-                    soundSystem.kick();
-                    ball.shooting = false;
-                }
-                
-                // Play music
-                soundSystem.music();
-
-                // Play commentary
-                if(gameLogic.playCommentary) {
-                    soundSystem.commentary();
-                    gameLogic.playCommentary = false;
-                }
+                CDsystem.collisionChecks();
+                gameLogic.resolveLogic();
+                ball.update();
             }
         };
 

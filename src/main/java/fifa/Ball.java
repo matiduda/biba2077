@@ -1,6 +1,5 @@
 package fifa;
 
-import javafx.animation.AnimationTimer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -51,7 +50,6 @@ public class Ball {
         list.add(ball);
 
         setCenter(field);
-        setEventsAndTimers();
     }
 
     public void draw() {
@@ -116,24 +114,18 @@ public class Ball {
         maxDistance = field.getRadius() - ball.getRadius() - centerOffset;
     }
 
-    protected void setEventsAndTimers() {
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (vel.x > 0)
-                    vel.x -= airResistance;
-                if (vel.x < 0)
-                    vel.x += airResistance;
-                if (vel.y > 0)
-                    vel.y -= airResistance;
-                if (vel.y < 0)
-                    vel.y += airResistance;
+    public void update() {
+        if (vel.x > 0)
+            vel.x -= airResistance;
+        if (vel.x < 0)
+            vel.x += airResistance;
+        if (vel.y > 0)
+            vel.y -= airResistance;
+        if (vel.y < 0)
+            vel.y += airResistance;
 
-                move(vel.x, vel.y);
-                draw();
-            }
-        };
-        timer.start();
+        move(vel.x, vel.y);
+        draw();
     }
 
     public void makeShootable(boolean value) {

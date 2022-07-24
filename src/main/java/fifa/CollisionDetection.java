@@ -3,7 +3,6 @@ package fifa;
 import java.util.Collection;
 import java.util.HashMap;
 
-import javafx.animation.AnimationTimer;
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 
@@ -33,15 +32,10 @@ public class CollisionDetection {
 
     Hitboxes hitboxes;
 
-    AnimationTimer collisionTimer;
-
     public CollisionDetection(Rectangle border, Logic gameLogic, Hitboxes hitboxes) {
         bottomFieldBorder = border;
         this.gameLogic = gameLogic;
         this.hitboxes = hitboxes;
-
-        setCollisionChecks();
-        collisionTimer.start();
     }
 
     public void addDynamic(Ball ball) {
@@ -161,86 +155,81 @@ public class CollisionDetection {
 
     // ---------- Timers and events ----------
 
-    private void setCollisionChecks() {
-        collisionTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                // Resolve collisions between dynamic objects
+    public void collisionChecks() {
+        // Resolve collisions between dynamic objects
 
-                for (int i = 0; i < dynamicSize; i++) {
-                    for (int j = i + 1; j < dynamicSize; j++) {
-                        Ball b1 = dynamicObj.get(i);
-                        Ball b2 = dynamicObj.get(j);
+        for (int i = 0; i < dynamicSize; i++) {
+            for (int j = i + 1; j < dynamicSize; j++) {
+                Ball b1 = dynamicObj.get(i);
+                Ball b2 = dynamicObj.get(j);
 
-                        if (checkBallCollision(b1, b2) == true) {
-                            resolveBallCollision(b1, b2);
-                            playKickSound = true;
+                if (checkBallCollision(b1, b2) == true) {
+                    resolveBallCollision(b1, b2);
+                    playKickSound = true;
+                }
+
+                // Check if player can shoot the ball
+                if (b1.IS_BALL && !b2.IS_BALL) {
+
+                    double d = Utils.getDistance(b1.pos, b2.pos);
+
+                    if (d < (b1.size + b2.size + 2 * ballShootableOffset)) {
+                        b2.makeShootable(true);
+
+                        if (b2.isShooting()) {
+                            b1.shoot(b2.pos, shootingStrength);
+                            b2.makeShootable(false);
                         }
+                    } else {
+                        b2.makeShootable(false);
+                    }
+                }
+            }
+        }
 
-                        // Check if player can shoot the ball
-                        if (b1.IS_BALL && !b2.IS_BALL) {
+        // Resolve collisions between ball and static objects
 
-                            double d = Utils.getDistance(b1.pos, b2.pos);
+        for (int i = 0; i < dynamicSize; i++) {
 
-                            if (d < (b1.size + b2.size + 2 * ballShootableOffset)) {
-                                b2.makeShootable(true);
+            Ball b = dynamicObj.get(i);
 
-                                if (b2.isShooting()) {
-                                    b1.shoot(b2.pos, shootingStrength);
-                                    b2.makeShootable(false);
-                                }
-                            } else {
-                                b2.makeShootable(false);
-                            }
-                        }
+            if (b.IS_BALL) {
+
+                for (int s = 0; s < 3; s++) {
+                    if (checkStaticCollision(b, bottomFieldBorder, goalGateAngles[s])) {
+                        if (s == 0)
+                            resolveSimpleStaticCollision(b);
+                        else
+                            resolveStaticCollision(b, goalGateAngles[s]);
+
+                    }
+                    if (checkStaticCollision(b, bottomFieldBorder, borderAngles[s])) {
+                        if (s == 1)
+                            resolveSimpleStaticCollision(b);
+                        else
+                            resolveStaticCollision(b, borderAngles[s]);
                     }
                 }
 
-                // Resolve collisions between ball and static objects
+                // Check for ball object and for all 3 angles
+                for (int j = 0; j < staticSize; j++) {
 
-                for (int i = 0; i < dynamicSize; i++) {
+                    Rectangle wall = staticObj.get(j);
 
-                    Ball b = dynamicObj.get(i);
+                    for (int s = 0; s < 3; s++) {
 
-                    if (b.IS_BALL) {
+                        if (checkStaticCollision(b, wall, goalGateAngles[s])) {
 
-                        for (int s = 0; s < 3; s++) {
-                            if (checkStaticCollision(b, bottomFieldBorder, goalGateAngles[s])) {
-                                if (s == 0)
-                                    resolveSimpleStaticCollision(b);
-                                else
-                                    resolveStaticCollision(b, goalGateAngles[s]);
-
+                            // Check for a score
+                            if (wall.getWidth() == hitboxes.getGoalHitbox().getWidth()) {
+                                gameLogic.goalDetected(s);
                             }
-                            if (checkStaticCollision(b, bottomFieldBorder, borderAngles[s])) {
-                                if (s == 1)
-                                    resolveSimpleStaticCollision(b);
-                                else
-                                    resolveStaticCollision(b, borderAngles[s]);
-                            }
-                        }
 
-                        // Check for ball object and for all 3 angles
-                        for (int j = 0; j < staticSize; j++) {
-
-                            Rectangle wall = staticObj.get(j);
-
-                            for (int s = 0; s < 3; s++) {
-
-                                if (checkStaticCollision(b, wall, goalGateAngles[s])) {
-
-                                    // Check for a score
-                                    if (wall.getWidth() == hitboxes.getGoalHitbox().getWidth()) {
-                                        gameLogic.goalDetected(s);
-                                    }
-
-                                    resolveSimpleStaticCollision(b);
-                                }
-                            }
+                            resolveSimpleStaticCollision(b);
                         }
                     }
                 }
             }
-        };
+        }
     }
 }

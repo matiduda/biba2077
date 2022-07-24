@@ -3,7 +3,6 @@ package fifa;
 import java.io.IOException;
 import java.util.Random;
 
-import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -56,8 +55,6 @@ public class Logic {
     private Text scorePlayer2;
     private Text scorePlayer3;
 
-    private AnimationTimer animation;
-
     private GridPane panel;
 
     // ----- Text box -----
@@ -106,7 +103,6 @@ public class Logic {
         list.add(textBox);
         list.add(pauseBox);
 
-        setEventsAndTimers();
         resetGame();
     }
 
@@ -236,60 +232,51 @@ public class Logic {
 
     // ---------------- Events and timers ----------------
 
-    private void setEventsAndTimers() {
-        animation = new AnimationTimer() {
+    public void resolveLogic() {
 
-            @Override
-            public void handle(long now) {
+        gameTime.setText(String.format("%02d:%02d", minutes, seconds));
 
-                // Timer
+        if (timer++ % GAME_TIME_MULTIPLIER == 0) {
+            // A second has passed in game time
+            seconds++;
+        }
 
-                gameTime.setText(String.format("%02d:%02d", minutes, seconds));
+        if (seconds == GAME_TIME_MULTIPLIER) {
+            seconds = 0;
+            minutes++;
+        }
 
-                if (timer++ % GAME_TIME_MULTIPLIER == 0) {
-                    // A second has passed in game time
-                    seconds++;
-                }
+        // Round logic
 
-                if (seconds == GAME_TIME_MULTIPLIER) {
-                    seconds = 0;
-                    minutes++;
-                }
+        if (nextRoundDelay > 0) {
+            nextRoundDelay--;
+        } else if (wait) {
+            p1.resetPos();
+            p2.resetPos();
+            p3.resetPos();
+            b.resetPos();
 
-                // Round logic
+            wait = false;
 
-                if (nextRoundDelay > 0) {
-                    nextRoundDelay--;
-                } else if (wait) {
-                    p1.resetPos();
-                    p2.resetPos();
-                    p3.resetPos();
-                    b.resetPos();
+            startFreeze = GAME_TIME_MULTIPLIER * START_ROUND_FREEZE_TIME_IN_SEC;
+            textBox.setVisible(true);
+            timeToStart.setVisible(true);
+            textBoxTimeBack.setVisible(true);
 
-                    wait = false;
+            roundBegun = false;
+            lockPlayers();
+        }
 
-                    startFreeze = GAME_TIME_MULTIPLIER * START_ROUND_FREEZE_TIME_IN_SEC;
-                    textBox.setVisible(true);
-                    timeToStart.setVisible(true);
-                    textBoxTimeBack.setVisible(true);
-
-                    roundBegun = false;
-                    lockPlayers();
-                }
-
-                if (startFreeze > 0) {
-                    startFreeze--;
-                    info.setText(String.format("Runda %d rozpocznie się za", currentRound));
-                    timeToStart.setText(String.format("%02d:%02d", startFreeze / GAME_TIME_MULTIPLIER,
-                            startFreeze % GAME_TIME_MULTIPLIER / 5));
-                } else if(!roundBegun) {
-                    textBox.setVisible(false);
-                    unlockPlayers();
-                    roundBegun = true;
-                }
-            }
-        };
-        animation.start();
+        if (startFreeze > 0) {
+            startFreeze--;
+            info.setText(String.format("Runda %d rozpocznie się za", currentRound));
+            timeToStart.setText(String.format("%02d:%02d", startFreeze / GAME_TIME_MULTIPLIER,
+                    startFreeze % GAME_TIME_MULTIPLIER / 5));
+        } else if(!roundBegun) {
+            textBox.setVisible(false);
+            unlockPlayers();
+            roundBegun = true;
+        }
     }
 
     // ---------------- FXML Object loading ----------------

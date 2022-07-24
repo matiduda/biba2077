@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
-    public static boolean STARTS_FULLSCREEN = false;
+    public static boolean STARTS_FULLSCREEN = true;
 
     public static double WIDTH = 1280;
     public static double HEIGHT = 720;
@@ -33,6 +33,11 @@ public class App extends Application {
     }
 
     private void prepareGameWindow(Stage stage, Scene scene, String pathToIcon) {
+        if (App.STARTS_FULLSCREEN) {
+            App.WIDTH = javafx.stage.Screen.getPrimary().getBounds().getWidth();
+            App.HEIGHT = javafx.stage.Screen.getPrimary().getBounds().getHeight();
+        }
+
         Image icon = new Image(getClass().getResource(pathToIcon).toString());
 
         stage.getIcons().add(icon);
